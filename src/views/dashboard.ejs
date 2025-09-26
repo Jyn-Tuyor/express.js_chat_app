@@ -1,28 +1,37 @@
 <section class="dashboard bg-gray-200 h-[100vh] flex justify-center py-4 px-2 ">
-    
-        <div class="p-4 rounded-sm border border-gray-400 bg-white  w-[380px] flex flex-col gap-4  border-r-2 border-b-4 border-gray-800">
-           
-            <div class="flex-1 cursor-pointer border-gray-800  bg-gray-200 text-gray-800 flex justify-center items-center rounded-sm border-r-4  border-b-4 hover:border-r-0 hover:border-b-0 hover:border-l-4 hover:border-t-4 hover:bg-gray-300 hover:text-gray-900 hover:shadow-sm">
-                <h1 class="text-3xl">CHAT</h1>
-            </div>
-            <div class="flex-1 cursor-pointer border-gray-800  bg-gray-200 text-gray-800 flex justify-center items-center rounded-sm border-r-4  border-b-4 hover:border-r-0 hover:border-b-0 hover:border-l-4 hover:border-t-4 hover:bg-gray-300 hover:text-gray-900 hover:shadow-sm">
-                <a class="text-3xl hover:underline" href="/users/create-profile">
-                    <% if (user.profile) { %>
-                        VIEW PROFILE    
-                    <% } else {%>
-                        CREATE PROFILE
-                    <% } %>
+
+    <div
+        class="p-4 rounded-sm border border-gray-400 bg-white  w-[380px] flex flex-col gap-4  border-r-2 border-b-4 border-gray-800">
+
+        <div
+            class="flex-1 cursor-pointer border-gray-800  bg-gray-200 text-gray-800 flex justify-center items-center rounded-sm border-r-4  border-b-4 hover:border-r-0 hover:border-b-0 hover:border-l-4 hover:border-t-4 hover:bg-gray-300 hover:text-gray-900 hover:shadow-sm">
+            <h1 class="text-3xl">CHAT</h1>
+        </div>
+        <div
+            class="flex-1 cursor-pointer border-gray-800  bg-gray-200 text-gray-800 flex justify-center items-center rounded-sm border-r-4  border-b-4 hover:border-r-0 hover:border-b-0 hover:border-l-4 hover:border-t-4 hover:bg-gray-300 hover:text-gray-900 hover:shadow-sm">
+            <% if (user.profile) { %>
+                <a class="text-3xl hover:underline" href="/users/my-profile">
+                    VIEW PROFILE
+
                 </a>
-            </div>
+                <% } else {%>
+                    <a class="text-3xl hover:underline" href="/users/create-profile">
+                        CREATE PROFILE
+                    </a>
 
-            <div class="flex-1 cursor-pointer border-gray-800  bg-gray-200 text-gray-800 flex justify-center items-center rounded-sm border-r-4  border-b-4 hover:border-r-0 hover:border-b-0 hover:border-l-4 hover:border-t-4 hover:bg-gray-300 hover:text-gray-900 hover:shadow-sm">
-                <h1 class="text-3xl">SEARCH PROFILE</h1>
-            </div>
-
-            <form action="/logout" method="POST" class="w-full">
-                <button class="w-full  bg-gray-300 border rounded-sm hover:bg-gray-200">Logout</button>
-            </form>
+                    <% } %>
 
         </div>
+
+        <div
+            class="flex-1 cursor-pointer border-gray-800  bg-gray-200 text-gray-800 flex justify-center items-center rounded-sm border-r-4  border-b-4 hover:border-r-0 hover:border-b-0 hover:border-l-4 hover:border-t-4 hover:bg-gray-300 hover:text-gray-900 hover:shadow-sm">
+            <h1 class="text-3xl">SEARCH PROFILE</h1>
+        </div>
+
+        <form action="/logout" method="POST" class="w-full">
+            <button class="w-full  bg-gray-300 border rounded-sm hover:bg-gray-200">Logout</button>
+        </form>
+
+    </div>
 
 </section>

@@ -29,5 +29,9 @@ router.post('/profile/store', async(req, res) => {
 
 })
 
+router.get("/my-profile", (req, res) =>{ 
+    const user = req.session.user;
+    res.render("view_profile", { user });
+})
 
 module.exports = router;
