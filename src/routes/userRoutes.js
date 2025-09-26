@@ -3,7 +3,8 @@ const router = express.Router();
 const UserProfile = require("../models/UserProfile")
 
 router.get("/create-profile", (req, res) => {
-    res.render("create_profile")
+    const user_id = req.session.user.id
+    res.render("create_profile", { user_id })
 })
 
 router.post('/profile/store', async(req, res) => {
