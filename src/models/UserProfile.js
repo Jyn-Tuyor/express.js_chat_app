@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize")
+const User = require("./User")
 const sequelize = require("../db")
 
 const UserProfile = sequelize.define("user_profile", {
@@ -9,5 +10,15 @@ const UserProfile = sequelize.define("user_profile", {
     "not_good": DataTypes.STRING,
     "bio": DataTypes.STRING
 })
+
+User.hasOne(UserProfile, {
+    foreignKey: {
+        name: "user_id",
+        allowNull: false
+    },
+    onDelete: 'cascade'
+})
+
+UserProfile.belongsTo(User, { foreignKey: 'user_id' })
 
 module.exports = UserProfile

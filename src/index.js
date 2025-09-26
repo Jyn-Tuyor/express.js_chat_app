@@ -58,7 +58,7 @@ protectedRoutes.get("/dashboard", (req, res) => {
 })
 
 // mounting the protected routes
-app.use("/users/", protectedRoutes);
+app.use("/users", protectedRoutes);
 
 app.get("/", (req, res) => {
     // res.send('hello, world!!!');
