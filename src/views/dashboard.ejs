@@ -6,7 +6,13 @@
                 <h1 class="text-3xl">CHAT</h1>
             </div>
             <div class="flex-1 cursor-pointer border-gray-800  bg-gray-200 text-gray-800 flex justify-center items-center rounded-sm border-r-4  border-b-4 hover:border-r-0 hover:border-b-0 hover:border-l-4 hover:border-t-4 hover:bg-gray-300 hover:text-gray-900 hover:shadow-sm">
-                <a class="text-3xl hover:underline" href="/users/create-profile">CREATE PROFILE</a>
+                <a class="text-3xl hover:underline" href="/users/create-profile">
+                    <% if (user.profile) { %>
+                        VIEW PROFILE    
+                    <% } else {%>
+                        CREATE PROFILE
+                    <% } %>
+                </a>
             </div>
 
             <div class="flex-1 cursor-pointer border-gray-800  bg-gray-200 text-gray-800 flex justify-center items-center rounded-sm border-r-4  border-b-4 hover:border-r-0 hover:border-b-0 hover:border-l-4 hover:border-t-4 hover:bg-gray-300 hover:text-gray-900 hover:shadow-sm">

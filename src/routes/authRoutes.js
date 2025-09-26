@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router();
 const bcrypt = require("bcrypt")
 const User  = require("../models/User")
-
+const UserProfile = require("../models/UserProfile")
 
 router.get("/register", (req, res) => {
     res.render("register")
@@ -18,7 +18,6 @@ router.post("/users/store", async (req, res) => {
         }
 
         const new_user = User.create({ username, id_number, password });
-        console.log(new_user)
 
         return res.status(201).redirect('/');
 
@@ -52,7 +51,10 @@ router.post("/login", async(req, res) => {
 
     // console.log(User)
     // return res.redirect('/')
-    const user = await User.findOne({ where: { id_number }});
+    const user = await User.findOne({ 
+        where: { id_number },
+        include: UserProfile
+    });
 
     if (!user) {
         // error: user not found
@@ -64,7 +66,15 @@ router.post("/login", async(req, res) => {
         return res.status(400).redirect('/');
     }
 
-    req.session.user = { id: user.id, id_number: user.id_number, username: user.username }
+    req.session.user = { 
+        id: user.id,
+        id_number: user.id_number,
+        username: user.username,
+        profile: user.user_profile || null
+    }
+    
+
+    console.log(user.toJSON())
     
     res.redirect('/users/dashboard')
 

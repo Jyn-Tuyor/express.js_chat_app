@@ -53,15 +53,24 @@ protectedRoutes.use(auth);
 
 
 protectedRoutes.use("/", require("./routes/userRoutes"))
+
 protectedRoutes.get("/dashboard", (req, res) => {
-    res.render("dashboard")
+    const user = req.session.user;
+    res.render("dashboard", { user })
 })
 
 // mounting the protected routes
 app.use("/users", protectedRoutes);
 
 app.get("/", (req, res) => {
-    // res.send('hello, world!!!');
+    // check if authed
+
+    if (req.session.user) {
+        console.log(req.session.user.profile)
+        return res.redirect('/users/dashboard');
+    }
+
     res.render('index');
 })
+
 app.listen(PORT, () => console.log("Server running on http://localhost:7878"));
