@@ -66,7 +66,7 @@ router.post("/login", async(req, res) => {
 
     req.session.user = { id: user.id, id_number: user.id_number, username: user.username }
     
-    res.redirect('/dashboard')
+    res.redirect('/users/dashboard')
 
 })
 

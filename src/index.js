@@ -3,6 +3,7 @@ const expressLayouts = require("express-ejs-layouts")
 const path = require('path')
 const session = require("express-session")
 const sequelize = require("./db")
+const auth = require("./middleware/auth")
 // Initialize tables
 require("./models/User")
 require("./models/UserProfile")
@@ -45,17 +46,22 @@ app.use(session({
 
 // routes
 app.use('/', require('./routes/authRoutes'));
-app.use("/users", require("./routes/userRoutes"))
+
+// protected route
+const protectedRoutes = express.Router();
+protectedRoutes.use(auth);
+
+
+protectedRoutes.use("/", require("./routes/userRoutes"))
+protectedRoutes.get("/dashboard", (req, res) => {
+    res.render("dashboard")
+})
+
+// mounting the protected routes
+app.use("/users/", protectedRoutes);
 
 app.get("/", (req, res) => {
     // res.send('hello, world!!!');
     res.render('index');
 })
-
-app.get("/dashboard", (req, res) => {
-    res.render("dashboard")
-})
-
-
-
-app.listen(7878, () => console.log("Server running on http://localhost:7878"));
+app.listen(PORT, () => console.log("Server running on http://localhost:7878"));
