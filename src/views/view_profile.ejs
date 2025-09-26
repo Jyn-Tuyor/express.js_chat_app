@@ -1,0 +1,43 @@
+<section class="dashboard bg-gray-200 h-[100vh] flex justify-center py-4 px-2 ">
+
+    <div
+        class="p-4 rounded-sm border border-gray-400 bg-white  w-[380px] flex flex-col gap-4  border-r-2 border-b-4 border-gray-800">
+
+        <h1 align="center">My Profile</h1>
+
+        <div>
+            <p>Username: <%= user.username %>
+            </p>
+            <p>ID: <%= user.id_number %>
+            </p>
+
+
+            <div
+                class="p-4 capitalize rounded-sm border border-gray-400 bg-white   flex flex-col gap-4  border-r-2 border-b-4 border-gray-800">
+                <p>Year Level: <%= user.profile.year_level %>
+                </p>
+                <p>Gender: <%= user.profile.gender %>
+                </p>
+                <p>Hobbies: <%= user.profile.hobby_1 %> & <%= user.profile.hobby_2 %>
+                </p>
+                <p class="lowercase ">Not so good at: <%= user.profile.not_good %>
+                </p>
+
+                <p class="block font-bold">Bio</p>
+                <div class="border rounded-sm p-2">
+                    <p class="text-black">
+                        <% user.profile.bio %>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <div class="flex flex-row gap-2">
+            <button type="submit"
+                class="flex-1 bg-slate-800 hover:bg-slate-900 font-bold text-white p-2 shadow-sm cursor-pointer">Edit</button>
+            <a class="flex-1 bg-slate-800 hover:bg-slate-900 font-bold text-white p-2 shadow-sm cursor-pointer" href="/">Go back</a>
+        </div>
+
+    </div>
+
+</section>
