@@ -1,0 +1,37 @@
+<form action="/login" method="post" class="bg-gray-200 h-[100vh] flex justify-center py-4 px-2 ">
+
+    <div
+        class="p-4 rounded-sm border border-gray-400 bg-white  w-[380px] flex flex-col gap-4 justify-center border-r-2 border-b-4 border-gray-800">
+        <div>
+            <label for="" class="block text-gray-600">ID</label>
+            <input type="text" placeholder="ID" name="id_number"
+                class="w-full p-2 rounded-sm border border-gray-200 outline-none focus:ring focus:ring-blue-500 duration-100">
+        </div>
+
+        <div>
+            <label for="" class="block text-gray-600">Password</label>
+            <input type="password" placeholder="Password" name="password"
+                class="w-full p-2 rounded-sm border border-gray-200 outline-none focus:ring focus:ring-blue-500 duration-100">
+        </div>
+
+        <!-- errors -->
+
+        <% if (typeof errors !="undefined" ) { %>
+            <ul class="text-red-500 bg-red-100 rounded-sm p-2 text-sm border">
+
+                <% errors.forEach(error=> { %>
+                    <li><%= error %></li>
+                <% }) %>
+            </ul>
+
+        <% } %>
+
+                <div class="flex flex-row gap-2">
+                    <button class="flex-1 bg-gray-800 text-white p-2 hover:bg-gray-900 font-bold ">Log In</button>
+                    <a class="text-center flex-1 bg-slate-800 hover:bg-slate-900 font-bold text-white p-2 shadow-sm cursor-pointer"
+                        href="/register">Register</a>
+                </div>
+
+    </div>
+
+</form>

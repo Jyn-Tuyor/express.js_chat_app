@@ -1,0 +1,54 @@
+<div class="flex items-center justify-center p-2 h-[60vh]">
+    <form action="/users/store" method="POST" class="w-1/4">
+
+        <div class="bg-white shadow-md   overflow-hidden border-b-4 border-r-5 border-gray-800 rounded-sm ">
+            <!-- Card header -->
+            <!-- <div class="bg-slate-800  px-4 py-8 flex flex-col justify-center items-center">
+                 <img src="/ustp.png" width="100" alt="">
+            </div> -->
+
+            <!-- End Header -->
+
+                <div class="flex flex-col gap-2 p-3">
+                    <div>
+                        <label for="" class="block text-gray-600">Username</label>
+                        <input class="border border-gray-200 outline-none p-2 rounded-sm w-full" type="text"
+                            placeholder="Username" name="username">
+                    </div>
+
+                    <div>
+                        <label for="" class="block text-gray-600">ID</label>
+                        <input class="border border-gray-200 outline-none p-2 rounded-sm w-full" type="text"
+                            placeholder="ID" name="id_number">
+                    </div>
+
+                    <div>
+                        <label for="" class="block text-gray-600">Password</label>
+                        <input class="border border-gray-200 outline-none p-2 rounded-sm w-full" type="password"
+                            placeholder="Password" name="password">
+                    </div>
+
+                    <div>
+                        <label for="" class="block text-gray-600">Confirm Password</label>
+                        <input class="border border-gray-200 outline-none p-2 rounded-sm w-full" type="password"
+                            placeholder="Confirm Password" name="password_confirmation">
+                    </div>
+
+
+                    <!-- <a href="">Don't have an account yet? </a> -->
+                    <div class="flex flex-row gap-2">
+                        <button
+                        type="submit"
+                            class="flex-1 bg-slate-800 hover:bg-slate-900 font-bold text-white p-2 shadow-sm cursor-pointer">Create
+                            Account</button>
+                        <a class="flex-1 bg-slate-800 hover:bg-slate-900 font-bold text-white p-2 shadow-sm cursor-pointer"
+                            href="/">Discard & Go back</a>
+                    </div>
+
+                </div>
+
+        </div>
+
+    </form>
+
+</div>

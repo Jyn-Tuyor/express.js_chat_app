@@ -1,0 +1,64 @@
+<section class="dashboard bg-gray-200 h-[100vh] flex justify-center items-center py-4 px-2 ">
+
+    <form
+        action="/users/profile/store"
+        method="post"
+        class="p-4 rounded-sm border border-gray-400 bg-white  w-[380px] flex flex-col gap-4 justify-center border-r-2 border-b-4 border-gray-800">
+        <div>
+            <label for="" class="block text-gray-600">Year</label>
+            <select name="year_level" id=""
+                class="w-full p-2 rounded-sm border border-gray-200 outline-none focus:ring focus:ring-blue-500 duration-100">
+                <option value="" selected disabled>Please select</option>
+                <option value="SHS">SHS</option>
+                <option value="freshman">Freshman</option>
+                <option value="sophomore">Sophomore</option>
+                <option value="junior">Junior</option>
+                <option value="senior">Senior</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="" class="block text-gray-600">Gender</label>
+            <select name="gender" id=""
+                class="w-full p-2 rounded-sm border border-gray-200 outline-none focus:ring focus:ring-blue-500 duration-100">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="" class="block text-gray-600">Hobbies</label>
+            <input type="text" placeholder="Hobby 1" name="hobby_1"
+                class="w-full p-2 rounded-sm border border-gray-200 outline-none focus:ring focus:ring-blue-500 duration-100">
+
+            <input type="text" placeholder="Hobby 2" name="hobby_2"
+                class="mt-2 w-full p-2 rounded-sm border border-gray-200 outline-none focus:ring focus:ring-blue-500 duration-100">
+
+        </div>
+
+        <div>
+            <label for="" class="block text-gray-600">Not good at...</label>
+            <input type="text" placeholder="" name="not_good"
+                class="w-full p-2 rounded-sm border border-gray-200 outline-none focus:ring focus:ring-blue-500 duration-100">
+
+        </div>
+
+        <div>
+            <label for="" class="block text-gray-600">What else would u want to say?</label>
+            <textarea type="text" placeholder="" name="bio"
+                class="w-full p-2 rounded-sm border border-gray-200 outline-none focus:ring focus:ring-blue-500 duration-100"></textarea>
+        </div>
+
+
+
+        <div class="flex flex-row gap-2">
+            <button type="submit"
+                class="flex-1 bg-slate-800 hover:bg-slate-900 font-bold text-white p-2 shadow-sm cursor-pointer">Confirm</button>
+            <a class="flex-1 bg-slate-800 hover:bg-slate-900 font-bold text-white p-2 shadow-sm cursor-pointer"
+                href="/dashboard">Discard & Go back</a>
+        </div>
+
+
+    </form>
+
+</section>
