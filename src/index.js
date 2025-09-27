@@ -73,4 +73,8 @@ app.get("/", (req, res) => {
     res.render('index');
 })
 
+app.get("/chat-room", (req, res) => [
+    res.render("chat_room")
+])
+
 app.listen(PORT, () => console.log("Server running on http://localhost:7878"));
