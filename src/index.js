@@ -49,7 +49,6 @@ app.use(session({
 
 // Web socket   
 const server = http.createServer(app)
-// const wss = new WsServer.Server({ server, clientTracking: true })
 
 // Socket logics are in here
 socketInit(server)
@@ -83,7 +82,6 @@ app.get("/", (req, res) => {
 
     res.render('index');
 })
-
 
 
 server.listen(PORT, () => console.log("Server running on http://localhost:7878"));
