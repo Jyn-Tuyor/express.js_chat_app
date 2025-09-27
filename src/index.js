@@ -54,12 +54,17 @@ const wss = new WsServer.Server({ server, clientTracking: true  })
 
 
 wss.on("connection", (web_socket, request) => {
-    web_socket.send("Hello, from the server!!")
+    // web_socket.send("Hello, from the server!!")
+    web_socket.on('message', (msg) => {
+        console.log(msg.toString())
+        // web_socket.send(msg.toString())
 
-    // web_socket.on("message", (msg) => {
-    //     console.log("Received: ", msg.toString())
-    // })
-
+        wss.clients.forEach((client) => {
+            if (client.readyState == WsServer.OPEN) {
+                client.send(msg.toString())
+            }
+        })
+    })
 })
 
 
@@ -92,8 +97,10 @@ app.get("/", (req, res) => {
     res.render('index');
 })
 
-app.get("/chat-room", (req, res) => [
-    res.render("chat_room")
-])
+app.get("/chat-room", (req, res) => {
+    const user = req.session.user;
+
+    res.render("chat_room", { user })
+})
 
 server.listen(PORT, () => console.log("Server running on http://localhost:7878"));
