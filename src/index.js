@@ -1,9 +1,13 @@
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
+const WsServer = require("ws")
+const http = require("http")
 const path = require('path')
 const session = require("express-session")
 const sequelize = require("./db")
 const auth = require("./middleware/auth")
+
+
 // Initialize tables
 require("./models/User")
 require("./models/UserProfile")
@@ -36,13 +40,28 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, '/public')))
 
 
-
 // session-setup
 app.use(session({
     secret: "dfgoqwoiqj",
     resave: false,
     saveUninitialized: false
 }))
+
+
+// Web socket   
+const server = http.createServer(app)
+const wss = new WsServer.Server({ server, clientTracking: true  })
+
+
+wss.on("connection", (web_socket, request) => {
+    web_socket.send("Hello, from the server!!")
+
+    // web_socket.on("message", (msg) => {
+    //     console.log("Received: ", msg.toString())
+    // })
+
+})
+
 
 // routes
 app.use('/', require('./routes/authRoutes'));
@@ -77,4 +96,4 @@ app.get("/chat-room", (req, res) => [
     res.render("chat_room")
 ])
 
-app.listen(PORT, () => console.log("Server running on http://localhost:7878"));
+server.listen(PORT, () => console.log("Server running on http://localhost:7878"));
