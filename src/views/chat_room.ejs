@@ -31,7 +31,7 @@
     const messages = document.getElementById("messages")
     // send message to the server
     socket.onopen = () => {
-        socket.send("Hello, from the client")
+        socket.send("<%= user.username %> joined the chat.")
     }
 
     // receive message from the server

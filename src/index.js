@@ -50,21 +50,37 @@ app.use(session({
 
 // Web socket   
 const server = http.createServer(app)
-const wss = new WsServer.Server({ server, clientTracking: true  })
+const wss = new WsServer.Server({ server, clientTracking: true })
 
 
-wss.on("connection", (web_socket, request) => {
-    // web_socket.send("Hello, from the server!!")
-    web_socket.on('message', (msg) => {
-        console.log(msg.toString())
-        // web_socket.send(msg.toString())
+wss.on("connection", (client_socket, request) => {
 
-        wss.clients.forEach((client) => {
-            if (client.readyState == WsServer.OPEN) {
-                client.send(msg.toString())
-            }
+    try {
+        client_socket.on('message', (msg) => {
+            wss.clients.forEach((client) => {
+                if (client.readyState === client_socket.OPEN) {
+                    msg = msg.toString();
+                    client.send(`${msg}`)
+                }
+            })
         })
+
+    } catch (err) {
+        console.log("Error processing data")
+    }
+
+    client_socket.on("close", (code, reason) => {
+        console.log(`A client disconnected, Code - ${code}, Reason - ${reason}`)
+        wss.clients.delete(client_socket);
     })
+
+    client_socket.on("error", (error) => {
+        console.log(`Websocket error: ${error}`)
+    })
+
+
+    client_socket.isAlive = true;
+
 })
 
 
@@ -97,10 +113,6 @@ app.get("/", (req, res) => {
     res.render('index');
 })
 
-app.get("/chat-room", (req, res) => {
-    const user = req.session.user;
 
-    res.render("chat_room", { user })
-})
 
 server.listen(PORT, () => console.log("Server running on http://localhost:7878"));
