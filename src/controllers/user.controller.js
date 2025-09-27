@@ -68,3 +68,9 @@ exports.updateProfile = async (req, res) => {
     }
 
 }
+
+exports.chatRoom =  (req, res) => {
+    const user = req.session.user;
+
+    res.render("chat_room", { user })
+}
