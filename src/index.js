@@ -56,9 +56,35 @@ const wss = new WsServer.Server({ server, clientTracking: true })
 wss.on("connection", (client_socket, request) => {
 
     try {
+        client_socket.isAlive = true;
+
+        // Keep alive system
+        // will ping every 30 seconds
+        const interval = setInterval(() => {
+            wss.clients.forEach((client) => {
+                if (client.isAlive == false) {
+                    // client.ping();
+                    console.log("Terminating unresponsive client.")
+                    return client.terminate()
+                }
+
+                client.isAlive = true;
+                client.ping();
+                console.log("Ping sent")
+
+            })
+
+
+        }, 30000)
+
+        client_socket.on('pong', () => {
+            console.log("Received a pong.")
+            client_socket.isAlive = true
+        })
+
         client_socket.on('message', (msg) => {
             wss.clients.forEach((client) => {
-                if (client.readyState === client_socket.OPEN) {
+                if (client.readyState === WsServer.OPEN) {
                     msg = msg.toString();
                     client.send(`${msg}`)
                 }
@@ -66,7 +92,7 @@ wss.on("connection", (client_socket, request) => {
         })
 
     } catch (err) {
-        console.log("Error processing data")
+        console.log(`Error processing data: ${err}`)
     }
 
     client_socket.on("close", (code, reason) => {
@@ -77,10 +103,6 @@ wss.on("connection", (client_socket, request) => {
     client_socket.on("error", (error) => {
         console.log(`Websocket error: ${error}`)
     })
-
-
-    client_socket.isAlive = true;
-
 })
 
 
