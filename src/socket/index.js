@@ -1,4 +1,7 @@
 const WsServer = require("ws")
+const Chat = require("../models/Chat")
+const User = require("../models/User")
+
 
 const socketInit = (server) => {
     const wss = new WsServer.Server({ server, clientTracking: true })
@@ -11,25 +14,34 @@ const socketInit = (server) => {
                 client_socket.isAlive = true
             })
 
-            client_socket.on('message', (raw) => {
+            client_socket.on('message', async(raw) => {
 
                 const message = JSON.parse(raw.toString())
 
 
                 if (message.type == 'join') {
                     client_socket.user = message.user
+                    // client_socket.id = message.id
 
                     wss.clients.forEach((client) => {
                         if (client.readyState === WsServer.OPEN) {
                             // msg = msg.toString();
                             client.send(JSON.stringify({
                                 type: 'join',
-                                message: `${message.user} joined the chat.`
+                                message: `${message.user.username} joined the chat.`
                             }))
                         }
                     })
                 } else if (message.type == 'chat') {
                     console.log(message)
+
+                    // store the chat to db
+                    await Chat.create({
+                        "sender_id": client_socket.user.id,
+                        "message": message.message,
+                        "type": 'global'
+                    })
+
                     wss.clients.forEach((client) => {
                         if (client.readyState === WsServer.OPEN) {
                             client.send(JSON.stringify({
@@ -55,7 +67,7 @@ const socketInit = (server) => {
                 if (client.readyState === WsServer.OPEN) {
                     client.send(JSON.stringify({
                         type: 'left',
-                        message:`${client_socket.user} left the chat.`
+                        message:`${client_socket.user.username} left the chat.`
                     }))
                 }
             })

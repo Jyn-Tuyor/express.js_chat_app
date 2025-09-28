@@ -28,13 +28,17 @@
     const messages = document.getElementById("messages")
 
     const user = "<%= user.username %>"
+    // const user_id = "<%= user.username %>"
 
     // send message to the server
     socket.onopen = () => {
         // socket.send("<%= user.username %> joined the chat.")
         socket.send(JSON.stringify({
             type: 'join',
-            user
+            user: {
+                username: "<%= user.username %>",
+                id: parseInt("<%= user.id %>")
+            }
         }))
     }
 
