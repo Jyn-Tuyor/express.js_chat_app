@@ -6,7 +6,18 @@
             <h1 class="text-3xl font-bold">Public Chat Room 🌏</h1>
         </div>
         <div class="border border-gray-200 rounded-sm p-2 overflow-y-scroll flex-1">
-            <ul id="messages"></ul>
+            <ul id="messages">
+                <% chats.forEach(chat=> { %>
+                    <li>
+
+                        <span class="<% if (chat.sender.username==user.username) {   %> font-bold text-green-700 <% } %>">
+                            <%= chat.sender.username%>
+                        </span>
+                        : <%= chat.message %>
+                    </li>
+                    <% }) %>
+            </ul>
+
         </div>
         <div class="flex gap-2">
             <input type="text" id="message-input" class="flex-1 p-2 border border-gray-200 outline-none rounded-sm"
@@ -50,7 +61,7 @@
         if (data.type == 'chat') {
             let username = data.message.split(":")[0]
             const message = data.message.split(":")[1];
-            
+
             if (username == user) {
                 li.innerHTML = `<b class="text-green-700">${user}</b>: ${message}`
             } else {

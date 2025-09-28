@@ -1,5 +1,6 @@
 const UserProfile = require("../models/UserProfile")
 const User = require("../models/User")
+const Chat = require("../models/Chat")
 
 exports.createProfile = async (req, res) => {
     try {
@@ -69,8 +70,11 @@ exports.updateProfile = async (req, res) => {
 
 }
 
-exports.chatRoom =  (req, res) => {
+exports.chatRoom =  async(req, res) => {
     const user = req.session.user;
 
-    res.render("chat_room", { user })
+    const chats = await Chat.findAll({ where: { broadcast: 'global'}, include: [{ model: User, as: "sender"} ] });
+    console.log(chats)
+
+    res.render("chat_room", { user, chats  })
 }

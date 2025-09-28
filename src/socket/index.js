@@ -39,7 +39,7 @@ const socketInit = (server) => {
                     await Chat.create({
                         "sender_id": client_socket.user.id,
                         "message": message.message,
-                        "type": 'global'
+                        "broadcast": 'global'
                     })
 
                     wss.clients.forEach((client) => {
