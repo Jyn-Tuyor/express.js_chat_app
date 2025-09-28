@@ -10,6 +10,7 @@ const socketInit = require("./socket")
 // Initialize tables
 require("./models/User")
 require("./models/UserProfile")
+require("./models/Chat")
 
 
 // sequelize.sync({ force: false });
