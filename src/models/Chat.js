@@ -4,7 +4,8 @@ const User = require("./User")
 
 const Chat = sequelize.define("chat", {
     message: { type: DataTypes.STRING, allowNull: false },
-    broadcast: { type: DataTypes.ENUM('global', 'private')}
+    broadcast: { type: DataTypes.ENUM('global', 'private')},
+    type: { type: DataTypes.ENUM('join', 'left', 'chat')}
 })
 
 Chat.belongsTo(User, {

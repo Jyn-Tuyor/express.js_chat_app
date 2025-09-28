@@ -14,7 +14,7 @@ const socketInit = (server) => {
                 client_socket.isAlive = true
             })
 
-            client_socket.on('message', async(raw) => {
+            client_socket.on('message', async (raw) => {
 
                 const message = JSON.parse(raw.toString())
 
@@ -22,6 +22,13 @@ const socketInit = (server) => {
                 if (message.type == 'join') {
                     client_socket.user = message.user
                     // client_socket.id = message.id
+
+                    await Chat.create({
+                        "sender_id": client_socket.user.id,
+                        "message": `${client_socket.user.username} joined the chat`,
+                        "broadcast": 'global',
+                        "type": "join"
+                    })
 
                     wss.clients.forEach((client) => {
                         if (client.readyState === WsServer.OPEN) {
@@ -39,7 +46,8 @@ const socketInit = (server) => {
                     await Chat.create({
                         "sender_id": client_socket.user.id,
                         "message": message.message,
-                        "broadcast": 'global'
+                        "broadcast": 'global',
+                        "type": "chat"
                     })
 
                     wss.clients.forEach((client) => {
@@ -60,14 +68,21 @@ const socketInit = (server) => {
             console.log(`Error processing data: ${err}`)
         }
 
-        client_socket.on("close", (code, reason) => {
+        client_socket.on("close", async (code, reason) => {
             console.log(`A client disconnected, Code - ${code}, Reason - ${reason}`)
+
+            await Chat.create({
+                "sender_id": client_socket.user.id,
+                "message": `${client_socket.user.username} left the chat`,
+                "broadcast": 'global',
+                "type": "left"
+            })
 
             wss.clients.forEach((client) => {
                 if (client.readyState === WsServer.OPEN) {
                     client.send(JSON.stringify({
                         type: 'left',
-                        message:`${client_socket.user.username} left the chat.`
+                        message: `${client_socket.user.username} left the chat.`
                     }))
                 }
             })

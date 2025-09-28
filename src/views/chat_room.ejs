@@ -8,13 +8,20 @@
         <div class="border border-gray-200 rounded-sm p-2 overflow-y-scroll flex-1">
             <ul id="messages">
                 <% chats.forEach(chat=> { %>
-                    <li>
+                        <li>
+
+                    <% if (chat.type == "left" ) {%>
+                            <span class="text-red-500"><%= chat.message %></span>
+                    <% } else if (chat.type == "join") { %>
+                            <span class="text-green-500"><%= chat.message %></span>
+                    <% } else { %>
 
                         <span class="<% if (chat.sender.username==user.username) {   %> font-bold text-green-700 <% } %>">
                             <%= chat.sender.username%>
                         </span>
                         : <%= chat.message %>
-                    </li>
+                    <% } %>
+                        </li>
                     <% }) %>
             </ul>
 
