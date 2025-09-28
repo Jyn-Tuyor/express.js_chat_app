@@ -11,7 +11,7 @@
         <div class="flex gap-2">
             <input type="text" id="message-input" class="flex-1 p-2 border border-gray-200 outline-none rounded-sm"
                 placeholder="Enter a message">
-            <button class="p-2 box text-black  cursor-pointer">Send</button>
+            <button type="submit" class="p-2 box text-black  cursor-pointer">Send</button>
         </div>
 
     </form>
@@ -26,23 +26,48 @@
     const form = document.getElementById('form')
     const input = document.getElementById("message-input")
     const messages = document.getElementById("messages")
+
+    const user = "<%= user.username %>"
+
     // send message to the server
     socket.onopen = () => {
-        socket.send("<%= user.username %> joined the chat.")
+        // socket.send("<%= user.username %> joined the chat.")
+        socket.send(JSON.stringify({
+            type: 'join',
+            user
+        }))
     }
 
     // receive message from the server
     socket.onmessage = (event) => {
         const li = document.createElement('li');
-        li.textContent = event.data;
-        messages.append(li)
-    }
+        console.log(event)
+        const data = JSON.parse(event.data)
+        if (data.type != 'join') {
+            let username = data.message.split(":")[0]
+            const message = data.message.split(":")[1];
 
+            
+            if (username == user) {
+                li.innerHTML = `<b class="text-green-700">${user}</b>: ${message}`
+            } else {
+                li.textContent = `${username}: ${message}`
+            }
+            messages.append(li)
+        } else {
+            li.textContent = data.message
+            messages.append(li)
+        }
+
+
+    }
 
     form.addEventListener("submit", (e) => {
         e.preventDefault();
-        const msg = input.value;
-        socket.send(`<%= user.username %>: ${msg}`)
+        const message = input.value;
+
+        socket.send(JSON.stringify({ type: 'chat', user, message }))
+
         input.value = ''
     })
 
