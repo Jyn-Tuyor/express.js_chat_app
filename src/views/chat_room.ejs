@@ -43,10 +43,9 @@
         const li = document.createElement('li');
         console.log(event)
         const data = JSON.parse(event.data)
-        if (data.type != 'join') {
+        if (data.type == 'chat') {
             let username = data.message.split(":")[0]
             const message = data.message.split(":")[1];
-
             
             if (username == user) {
                 li.innerHTML = `<b class="text-green-700">${user}</b>: ${message}`
