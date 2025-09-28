@@ -35,8 +35,10 @@ exports.login = async (req, res) => {
     }
     const isValid = await bcrypt.compare(password, user.password)
     if (!isValid) {
+        errors.push("Account not found.")
         // login failed
-        return res.status(400).redirect('/');
+        // return res.status(400).redirect('/');
+        return res.render('index', { errors })
     }
 
     req.session.user = {

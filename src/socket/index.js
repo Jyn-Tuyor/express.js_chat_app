@@ -7,7 +7,6 @@ const socketInit = (server) => {
         try {
             client_socket.isAlive = true;
 
-
             client_socket.on('pong', () => {
                 console.log("Received a pong.")
                 client_socket.isAlive = true
