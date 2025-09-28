@@ -3,12 +3,14 @@ const expressLayouts = require("express-ejs-layouts")
 const http = require("http")
 const path = require('path')
 const session = require("express-session")
+const { Op } = require("sequelize")
+
 const sequelize = require("./db")
 const auth = require("./middleware/auth")
 const socketInit = require("./socket")
 
 // Initialize tables
-require("./models/User")
+const User = require("./models/User")
 require("./models/UserProfile")
 require("./models/Chat")
 
@@ -65,8 +67,23 @@ protectedRoutes.use(auth);
 
 protectedRoutes.use("/", require("./routes/userRoutes"))
 
-protectedRoutes.get("/dashboard", (req, res) => {
+protectedRoutes.get("/dashboard", async(req, res) => {
     const user = req.session.user;
+    const user_id = req.query.user_id
+
+    if (user_id) {
+        
+        const fetched_users = await User.findAll({ 
+            where: {
+                id_number: {
+                    [Op.like]: `%${user_id}`
+                }
+            } 
+        })
+        // console.log(fetched_users);
+        return res.render("dashboard", { user, fetched_users })
+    }
+
     res.render("dashboard", { user })
 })
 

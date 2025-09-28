@@ -1,6 +1,6 @@
-<section class="dashboard h-[100vh] flex justify-center py-4 px-2 ">
+<section class="dashboard h-[100vh] flex justify-center p-8">
 
-    <div class="box w-full p-4 rounded-sm ">
+    <div class="box w-full p-4 rounded-sm flex flex-col sm:flex-row gap-12 p-2">
 
         <div>
             <h1>Welcome back, <b>
@@ -14,8 +14,20 @@
 
                 <ul>
                     <li><a href="/users/chat-room" class="hover:underline">Chat room</a></li>
-                    <li><a href="" class="hover:underline">Private chat</a></li>
-                    <li><a href="/users/my-profile" class="hover:underline">My profile</a></li>
+                    <!-- <li><a href="" class="hover:underline">Private chat</a></li> -->
+                    <li>
+                        <% if (user.profile) { %>
+                            <a class="hover:underline" href="/users/my-profile">
+                                My profile
+
+                            </a>
+                            <% } else {%>
+                                <a class="hover:underline" href="/users/create-profile">
+                                    Create profile
+                                </a>
+
+                                <% } %>
+                    </li>
                     <li>
                         <form action="/logout" method="POST">
                             <button type="submit" class="hover:underline cursor-pointer">Logout</button>
@@ -27,36 +39,52 @@
         </div>
 
 
-        <!-- <div
-            class="flex-1 cursor-pointer border-gray-800  bg-gray-200 text-gray-800 flex justify-center items-center rounded-sm border-r-4  border-b-4 hover:border-r-0 hover:border-b-0 hover:border-l-4 hover:border-t-4 hover:bg-gray-300 hover:text-gray-900 hover:shadow-sm">
-            <a class="text-3xl hover:underline" href="/users/chat-room">
-                CHAT ROOM
-            </a>
-        </div>
-        <div
-            class="flex-1 cursor-pointer border-gray-800  bg-gray-200 text-gray-800 flex justify-center items-center rounded-sm border-r-4  border-b-4 hover:border-r-0 hover:border-b-0 hover:border-l-4 hover:border-t-4 hover:bg-gray-300 hover:text-gray-900 hover:shadow-sm">
-            <% if (user.profile) { %>
-                <a class="text-3xl hover:underline" href="/users/my-profile">
-                    MY PROFILE
 
-                </a>
+        <!-- Search profile section -->
+        <div class="bg-gray-50 rounded-sm shadow-md border-b-4 border-r-4 flex-1  p-2 overflow-y-scroll">
+
+            <!-- Form -->
+            <div>
+                <form>
+                    <input type="text" name="user_id" placeholder="User ID"
+                        class="text-gray-800 text-sm bg-gray-100 rounded-sm p-2 outline-none">
+
+                    <button class="bg-teal-700 text-white rounded-sm p-2 text-sm">Search</button>
+                </form>
+            </div>
+
+            <!-- Results -->
+            <div class="mt-4 flex flex-col gap-4 ">
+
+
+                <% if (typeof fetched_users != "undefined" && fetched_users.length > 0) { %>
+
+                <% fetched_users.forEach((user) => { %>
+                    <div class="bg-gray-100 p-4 rounded-sm flex flex-col ">
+                        <div>
+                            <ul>
+                                <li>
+                                    <span><%= user.username %></span>
+                                </li>
+
+                                <li>
+                                    <span class="text-gray-400 text-sm">ID: <%= user.id_number %></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <a class="bg-teal-600 w-fit rounded-sm p-2 text-gray-50 shadow-sm cursor-pointer text-sm">Chat with
+                            this person</a>
+                    </div>
+                <% }) %>
+
                 <% } else {%>
-                    <a class="text-3xl hover:underline" href="/users/create-profile">
-                        CREATE PROFILE
-                    </a>
-
+                        <span align="center" class="text-gray-500 text-sm">No results</span>
                     <% } %>
+            </div>
+
 
         </div>
 
-        <div
-            class="flex-1 cursor-pointer border-gray-800  bg-gray-200 text-gray-800 flex justify-center items-center rounded-sm border-r-4  border-b-4 hover:border-r-0 hover:border-b-0 hover:border-l-4 hover:border-t-4 hover:bg-gray-300 hover:text-gray-900 hover:shadow-sm">
-            <h1 class="text-3xl">SEARCH PROFILE</h1>
-        </div>
-
-        <form action="/logout" method="POST" class="w-full">
-            <button class="w-full  bg-gray-300 border rounded-sm hover:bg-gray-200">Logout</button>
-        </form> -->
 
     </div>
 
