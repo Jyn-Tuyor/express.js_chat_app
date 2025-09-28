@@ -17,6 +17,7 @@ require("./models/Chat")
 
 // sequelize.sync({ force: false });
 const dotenv = require("dotenv")
+const UserProfile = require("./models/UserProfile")
 dotenv.config()
 
 const PORT = 7878;
@@ -68,9 +69,18 @@ protectedRoutes.use(auth);
 protectedRoutes.use("/", require("./routes/userRoutes"))
 
 protectedRoutes.get("/dashboard", async(req, res) => {
-    const user = req.session.user;
     const user_id = req.query.user_id
 
+    const user = await User.findOne({
+        where: { id: req.session.user.id },
+        include: [
+        {
+            model: UserProfile,
+            as: "profile" 
+        }
+    ]})
+
+    console.log("USer:::", user.profile)
     if (user_id) {
         
         const fetched_users = await User.findAll({ 
@@ -84,7 +94,7 @@ protectedRoutes.get("/dashboard", async(req, res) => {
         return res.render("dashboard", { user, fetched_users })
     }
 
-    res.render("dashboard", { user })
+    return res.render("dashboard", { user })
 })
 
 // mounting the protected routes

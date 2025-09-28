@@ -12,6 +12,7 @@ const UserProfile = sequelize.define("user_profile", {
 })
 
 User.hasOne(UserProfile, {
+    as: "profile",
     foreignKey: {
         name: "user_id",
         allowNull: false

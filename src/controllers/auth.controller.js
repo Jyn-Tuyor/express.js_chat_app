@@ -26,7 +26,12 @@ exports.login = async (req, res) => {
     // return res.redirect('/')
     const user = await User.findOne({
         where: { id_number },
-        include: UserProfile
+        include: [
+            {
+                model: UserProfile,
+                as: "profile"
+            }
+        ]
     });
 
     if (!user) {
@@ -45,7 +50,7 @@ exports.login = async (req, res) => {
         id: user.id,
         id_number: user.id_number,
         username: user.username,
-        profile: user.user_profile || null
+        profile: user.profile || null
     }
 
 
