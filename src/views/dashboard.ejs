@@ -1,9 +1,33 @@
 <section class="dashboard h-[100vh] flex justify-center py-4 px-2 ">
 
-    <div
-        class="p-4 rounded-sm border border-gray-400 bg-white  w-[380px] flex flex-col gap-4  border-r-2 border-b-4 border-gray-800">
+    <div class="box w-full p-4 rounded-sm ">
 
-        <div
+        <div>
+            <h1>Welcome back, <b>
+                    <%= user.username %>
+                </b>!</h1>
+
+
+            <div>
+                <span class="text-blue-600 underline"><i>App links</i></span>
+
+
+                <ul>
+                    <li><a href="/users/chat-room" class="hover:underline">Chat room</a></li>
+                    <li><a href="" class="hover:underline">Private chat</a></li>
+                    <li><a href="/users/my-profile" class="hover:underline">My profile</a></li>
+                    <li>
+                        <form action="/logout" method="POST">
+                            <button type="submit" class="hover:underline cursor-pointer">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+
+        <!-- <div
             class="flex-1 cursor-pointer border-gray-800  bg-gray-200 text-gray-800 flex justify-center items-center rounded-sm border-r-4  border-b-4 hover:border-r-0 hover:border-b-0 hover:border-l-4 hover:border-t-4 hover:bg-gray-300 hover:text-gray-900 hover:shadow-sm">
             <a class="text-3xl hover:underline" href="/users/chat-room">
                 CHAT ROOM
@@ -32,7 +56,7 @@
 
         <form action="/logout" method="POST" class="w-full">
             <button class="w-full  bg-gray-300 border rounded-sm hover:bg-gray-200">Logout</button>
-        </form>
+        </form> -->
 
     </div>
 
