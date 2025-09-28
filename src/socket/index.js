@@ -53,7 +53,10 @@ const socketInit = (server) => {
 
             wss.clients.forEach((client) => {
                 if (client.readyState === WsServer.OPEN) {
-                    client.send(`${client_socket.user} left the chat.`)
+                    client.send(JSON.stringify({
+                        type: 'left',
+                        message:`${client_socket.user} left the chat.`
+                    }))
                 }
             })
 
