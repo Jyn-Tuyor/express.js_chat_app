@@ -76,7 +76,7 @@ protectedRoutes.get("/dashboard", async(req, res) => {
         const fetched_users = await User.findAll({ 
             where: {
                 id_number: {
-                    [Op.like]: `%${user_id}`
+                    [Op.like]: `%${user_id}%`
                 }
             } 
         })
