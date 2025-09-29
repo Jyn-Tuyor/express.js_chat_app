@@ -68,28 +68,7 @@ const socketInit = (server) => {
             console.log(`Error processing data: ${err}`)
         }
 
-        client_socket.on("close", async (code, reason) => {
-            console.log(`A client disconnected, Code - ${code}, Reason - ${reason}`)
-
-            await Chat.create({
-                "sender_id": client_socket.user.id,
-                "message": `${client_socket.user.username} left the chat`,
-                "broadcast": 'global',
-                "type": "left"
-            })
-
-            wss.clients.forEach((client) => {
-                if (client.readyState === WsServer.OPEN) {
-                    client.send(JSON.stringify({
-                        type: 'left',
-                        message: `${client_socket.user.username} left the chat.`
-                    }))
-                }
-            })
-
-
-            wss.clients.delete(client_socket);
-        })
+        
 
         client_socket.on("error", (error) => {
             console.log(`Websocket error: ${error}`)
@@ -114,6 +93,29 @@ const socketInit = (server) => {
 
         }, 30000)
 
+
+        client_socket.on("close", async (code, reason) => {
+            console.log(`A client disconnected, Code - ${code}, Reason - ${reason}`)
+
+            await Chat.create({
+                "sender_id": client_socket.user.id,
+                "message": `${client_socket.user.username} left the chat`,
+                "broadcast": 'global',
+                "type": "left"
+            })
+
+            wss.clients.forEach((client) => {
+                if (client.readyState === WsServer.OPEN) {
+                    client.send(JSON.stringify({
+                        type: 'left',
+                        message: `${client_socket.user.username} left the chat.`
+                    }))
+                }
+            })
+
+            clearInterval(interval)
+            wss.clients.delete(client_socket);
+        })
 
     })
 
