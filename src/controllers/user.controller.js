@@ -78,3 +78,9 @@ exports.chatRoom =  async(req, res) => {
 
     res.render("chat_room", { user, chats  })
 }
+
+exports.privateChat = async(req, res) => {
+    const user = await User.findOne({ where: { id: req.params.id }}) 
+
+    return res.render("private_chat", { user });
+}

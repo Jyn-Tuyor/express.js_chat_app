@@ -8,5 +8,6 @@ router.get("/my-profile", userController.myProfile)
 router.get("/my-profile/edit", userController.editProfile)
 router.post("/my-profile/update", userController.updateProfile)
 router.get("/chat-room", userController.chatRoom)
+router.get("/private/chat/:id", userController.privateChat)
 
 module.exports = router;
