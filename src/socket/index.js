@@ -69,6 +69,14 @@ const socketInit = (server) => {
                             }))
                         }
                     })
+                } else if (message.type == 'join' && message.broadcast == 'private') {
+                    
+                    client_socket.user = message.user
+                    console.log("user is " + client_socket.user)
+                    clients.set(client_socket.user.id, client_socket);
+                    connectType = "private"
+
+
                 } else if (message.type == 'chat' && message.broadcast == 'private') {
                     connectType = "private"
                     // console.log(message)
@@ -98,7 +106,7 @@ const socketInit = (server) => {
                         //     "type": "chat"
                         // })
                     } else {
-                        console.log("socket id: " + client_socket.user.id)
+                        // console.log("socket id: " + client_socket.user.id)
                         await Chat.create({
                             "sender_id": client_socket.user.id,
                             "receiver_id": message.receiver,
