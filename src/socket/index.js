@@ -10,21 +10,27 @@ const socketInit = (server) => {
     const wss = new WsServer.Server({ server, clientTracking: true })
     wss.on("connection", (client_socket) => {
         try {
-            clients.set(client_socket.user.id, client_socket);
             client_socket.isAlive = true;
-
             client_socket.on('pong', () => {
                 console.log("Received a pong.")
                 client_socket.isAlive = true
             })
 
             client_socket.on('message', async (raw) => {
-
                 const message = JSON.parse(raw.toString())
+                // client_socket.user = message.user
+
+                // console.log("user is " + client_socket.user)
+
+                // clients.set(client_socket.user.id, client_socket);
 
 
                 if (message.type == 'join' && message.broadcast == 'public') {
                     client_socket.user = message.user
+
+                    console.log("user is " + client_socket.user)
+
+                    clients.set(client_socket.user.id, client_socket);
                     // client_socket.id = message.id
                     connectType = "public"
 
@@ -66,20 +72,20 @@ const socketInit = (server) => {
                 } else if (message.type == 'chat' && message.broadcast == 'private') {
                     connectType = "private"
                     // console.log(message)
-                    const targetSocket = clients.get(message.to);
+                    const targetSocket = clients.get(message.receiver);
                     // console.log(targetSocket)
-                    const from = JSON.parse(message.from)
+                    // const from = JSON.parse(message.from)
                     // console.log("from: ", from)
-                    
+
                     console.log(targetSocket)
 
-                    
+
                     if (targetSocket && targetSocket.readyState == WebSocket.OPEN) {
 
                         targetSocket.send(JSON.stringify({
                             "type": "chat",
                             "broadcast": "private",
-                            "from": from,
+                            // "from": from,
                             "message": message.message
                         }))
 
@@ -91,6 +97,15 @@ const socketInit = (server) => {
                         //     "broadcast": 'global',
                         //     "type": "chat"
                         // })
+                    } else {
+                        console.log("socket id: " + client_socket.user.id)
+                        await Chat.create({
+                            "sender_id": client_socket.user.id,
+                            "receiver_id": message.receiver,
+                            "message": message.message,
+                            "broadcast": 'private',
+                            "type": "chat"
+                        })
                     }
 
 

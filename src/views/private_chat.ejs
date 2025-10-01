@@ -49,8 +49,8 @@
             type: 'chat',
             broadcast: 'private',
             message,
-            from: JSON.stringify("<%= user %>"),
-            to: parseInt("<%= user.id  %>")
+            sender: JSON.stringify("<%= user %>"),
+            receiver: parseInt("<%= chat_with.id  %>")
         }))
 
         const li = document.createElement("li");
