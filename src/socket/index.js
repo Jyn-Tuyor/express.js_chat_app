@@ -4,6 +4,7 @@ const User = require("../models/User")
 
 
 const clients = new Map();
+let connectType;
 
 const socketInit = (server) => {
     const wss = new WsServer.Server({ server, clientTracking: true })
@@ -25,7 +26,7 @@ const socketInit = (server) => {
                 if (message.type == 'join' && message.broadcast == 'public') {
                     client_socket.user = message.user
                     // client_socket.id = message.id
-
+                    connectType = "public"
 
                     await Chat.create({
                         "sender_id": client_socket.user.id,
@@ -45,7 +46,7 @@ const socketInit = (server) => {
                     })
                 } else if (message.type == 'chat' && message.broadcast == 'public') {
                     console.log(message)
-
+                    connectType = "public"
                     // store the chat to db
                     await Chat.create({
                         "sender_id": client_socket.user.id,
@@ -63,6 +64,7 @@ const socketInit = (server) => {
                         }
                     })
                 } else if (message.type == 'chat' && message.broadcast == 'private') {
+                    connectType = "private"
                     console.log(message)
                     const targetSocket = clients.get(message.to);
                     console.log(targetSocket)
@@ -131,15 +133,16 @@ const socketInit = (server) => {
             //     "broadcast": 'global',
             //     "type": "left"
             // })
-
-            wss.clients.forEach((client) => {
-                if (client.readyState === WsServer.OPEN) {
-                    client.send(JSON.stringify({
-                        type: 'left',
-                        message: `${client_socket.user.username} left the chat.`
-                    }))
-                }
-            })
+            if (connectType == "public ") {
+                wss.clients.forEach((client) => {
+                    if (client.readyState === WsServer.OPEN) {
+                        client.send(JSON.stringify({
+                            type: 'left',
+                            message: `${client_socket.user.username} left the chat.`
+                        }))
+                    }
+                })
+            }
 
             clearInterval(interval)
             wss.clients.delete(client_socket);

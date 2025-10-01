@@ -24,10 +24,20 @@
     const messages = document.getElementById("messages")
 
     socket.onopen = () => {
-        // socket.send(JSON.stringify({
-        //     type: 
-        // }))
+        socket.send(JSON.stringify({
+            type: 'join',
+            broadcast: 'private',
+            user: {
+                username: "<%= user.username %>",
+                id: parseInt("<%= user.id %>")
+            }
+        }))
         console.log("connected")
+    }
+
+    socket.onmessage = (event) => {
+        console.log(event)
+
     }
 
     form.addEventListener("submit", (e) => {
