@@ -65,11 +65,15 @@ const socketInit = (server) => {
                     })
                 } else if (message.type == 'chat' && message.broadcast == 'private') {
                     connectType = "private"
-                    console.log(message)
+                    // console.log(message)
                     const targetSocket = clients.get(message.to);
-                    console.log(targetSocket)
+                    // console.log(targetSocket)
                     const from = JSON.parse(message.from)
-                    console.log("from: ", from)
+                    // console.log("from: ", from)
+                    
+                    console.log(targetSocket)
+
+                    
                     if (targetSocket && targetSocket.readyState == WebSocket.OPEN) {
 
                         targetSocket.send(JSON.stringify({

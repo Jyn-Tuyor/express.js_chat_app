@@ -20,7 +20,7 @@ Chat.belongsTo(User, {
 Chat.belongsTo(User, {
     as: "receiver",
     foreignKey: {
-        name: "foreign_id",
+        name: "receiver_id",
         allowNull: true
     },
     onDelete: 'cascade'
