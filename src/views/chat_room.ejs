@@ -53,6 +53,7 @@
         // socket.send("<%= user.username %> joined the chat.")
         socket.send(JSON.stringify({
             type: 'join',
+            broadcast: 'public',
             user: {
                 username: "<%= user.username %>",
                 id: parseInt("<%= user.id %>")
@@ -72,11 +73,11 @@
             if (username == user) {
                 li.innerHTML = `<b class="text-green-700">${user}</b>: ${message}`
             } else {
-                li.textContent = `${username}: ${message}`
+                li.innerHTML = `${username}: ${message}`
             }
             messages.append(li)
         } else {
-            li.textContent = data.message
+            li.innerHTML = data.message
             messages.append(li)
         }
 

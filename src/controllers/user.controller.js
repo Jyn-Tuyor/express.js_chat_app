@@ -80,7 +80,7 @@ exports.chatRoom =  async(req, res) => {
 }
 
 exports.privateChat = async(req, res) => {
-    const user = await User.findOne({ where: { id: req.params.id }}) 
-
-    return res.render("private_chat", { user });
+    const chat_with = await User.findOne({ where: { id: req.params.id }}) 
+    const user = req.session.user; 
+    return res.render("private_chat", { user, chat_with });
 }

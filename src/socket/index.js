@@ -3,10 +3,13 @@ const Chat = require("../models/Chat")
 const User = require("../models/User")
 
 
+const clients = new Map();
+
 const socketInit = (server) => {
     const wss = new WsServer.Server({ server, clientTracking: true })
     wss.on("connection", (client_socket) => {
         try {
+            clients.set(client_socket.user.id, client_socket);
             client_socket.isAlive = true;
 
             client_socket.on('pong', () => {
@@ -19,9 +22,10 @@ const socketInit = (server) => {
                 const message = JSON.parse(raw.toString())
 
 
-                if (message.type == 'join') {
+                if (message.type == 'join' && message.broadcast == 'public') {
                     client_socket.user = message.user
                     // client_socket.id = message.id
+
 
                     await Chat.create({
                         "sender_id": client_socket.user.id,
@@ -39,7 +43,7 @@ const socketInit = (server) => {
                             }))
                         }
                     })
-                } else if (message.type == 'chat') {
+                } else if (message.type == 'chat' && message.broadcast == 'public') {
                     console.log(message)
 
                     // store the chat to db
@@ -58,6 +62,32 @@ const socketInit = (server) => {
                             }))
                         }
                     })
+                } else if (message.type == 'chat' && message.broadcast == 'private') {
+                    console.log(message)
+                    const targetSocket = clients.get(message.to);
+                    console.log(targetSocket)
+                    const from = JSON.parse(message.from)
+                    console.log("from: ", from)
+                    if (targetSocket && targetSocket.readyState == WebSocket.OPEN) {
+
+                        targetSocket.send(JSON.stringify({
+                            "type": "chat",
+                            "broadcast": "private",
+                            "from": from,
+                            "message": message.message
+                        }))
+
+                        console.log("sended")
+
+                        // await Chat.create({
+                        //     "sender_id": client_socket.user.id,
+                        //     "message": message.message,
+                        //     "broadcast": 'global',
+                        //     "type": "chat"
+                        // })
+                    }
+
+
                 }
 
 
@@ -67,8 +97,6 @@ const socketInit = (server) => {
         } catch (err) {
             console.log(`Error processing data: ${err}`)
         }
-
-        
 
         client_socket.on("error", (error) => {
             console.log(`Websocket error: ${error}`)
@@ -97,12 +125,12 @@ const socketInit = (server) => {
         client_socket.on("close", async (code, reason) => {
             console.log(`A client disconnected, Code - ${code}, Reason - ${reason}`)
 
-            await Chat.create({
-                "sender_id": client_socket.user.id,
-                "message": `${client_socket.user.username} left the chat`,
-                "broadcast": 'global',
-                "type": "left"
-            })
+            // await Chat.create({
+            //     "sender_id": client_socket.user.id,
+            //     "message": `${client_socket.user.username} left the chat`,
+            //     "broadcast": 'global',
+            //     "type": "left"
+            // })
 
             wss.clients.forEach((client) => {
                 if (client.readyState === WsServer.OPEN) {
