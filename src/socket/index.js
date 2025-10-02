@@ -1,6 +1,7 @@
 const WsServer = require("ws")
 const Chat = require("../models/Chat")
-const User = require("../models/User")
+// const User = require("../models/User")
+const ConnectionManager = require("./connectionManager")
 
 
 const clients = new Map();
@@ -8,6 +9,10 @@ let connectType;
 
 const socketInit = (server) => {
     const wss = new WsServer.Server({ server, clientTracking: true })
+
+    const connectionManager = new ConnectionManager(wss);
+    
+
     wss.on("connection", (client_socket) => {
         try {
             client_socket.isAlive = true;
@@ -23,7 +28,6 @@ const socketInit = (server) => {
                 // console.log("user is " + client_socket.user)
 
                 // clients.set(client_socket.user.id, client_socket);
-
 
                 if (message.type == 'join' && message.broadcast == 'public') {
                     client_socket.user = message.user

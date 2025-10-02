@@ -34,9 +34,15 @@
         }))
         console.log("connected")
     }
-    
+
     socket.onmessage = (event) => {
-        console.log(event)
+        // console.log(event)
+
+        const li = document.createElement("li");
+        const data = JSON.parse(event.data)
+        li.innerHTML =  data.message;
+        messages.append(li)
+        input.value = ''
 
     }
 
