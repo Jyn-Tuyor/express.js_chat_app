@@ -9,8 +9,7 @@ let connectType;
 
 const socketInit = (server) => {
     const wss = new WsServer.Server({ server, clientTracking: true })
-
-    const connectionManager = new ConnectionManager(wss);
+    const connectionManager = new ConnectionManager(wss, WsServer);
     
 
     wss.on("connection", (client_ws) => {
@@ -23,20 +22,11 @@ const socketInit = (server) => {
 
             client_ws.on('message', async (raw) => {
                 const message = JSON.parse(raw.toString())
-                // client_ws.user = message.user
-
-                // console.log("user is " + client_ws.user)
-
-                // clients.set(client_ws.user.id, client_ws);
 
                 if (message.type == 'join' && message.broadcast == 'public') {
                     client_ws.user = message.user
 
-                    // console.log("user is " + client_ws.user)
-
-                    // clients.set(client_ws.user.id, client_ws);
                     connectionManager.addClient(client_ws.user.id, client_ws)
-                    // client_ws.id = message.id
                     connectType = "public"
 
                     await Chat.create({
@@ -46,19 +36,13 @@ const socketInit = (server) => {
                         "type": "join"
                     })
 
-                    wss.clients.forEach((client) => {
-                        if (client.readyState === WsServer.OPEN) {
-                            // msg = msg.toString();
-                            client.send(JSON.stringify({
-                                type: 'join',
-                                message: `${message.user.username} joined the chat.`
-                            }))
-                        }
-                    })
+                    
+                    connectionManager.broadcastPublicAlert(message);
+
+
                 } else if (message.type == 'chat' && message.broadcast == 'public') {
-                    // console.log(message)
                     connectType = "public"
-                    // store the chat to db
+                    console.log(message)
                     await Chat.create({
                         "sender_id": client_ws.user.id,
                         "message": message.message,
@@ -66,32 +50,19 @@ const socketInit = (server) => {
                         "type": "chat"
                     })
 
-                    wss.clients.forEach((client) => {
-                        if (client.readyState === WsServer.OPEN) {
-                            client.send(JSON.stringify({
-                                type: 'chat',
-                                message: `${message.user}: ${message.message}`
-                            }))
-                        }
-                    })
+                    connectionManager.broadcastPublicChat(message);
+
                 } else if (message.type == 'join' && message.broadcast == 'private') {
                     
                     client_ws.user = message.user
-                    // console.log("user is " + client_ws.user.username)
                     clients.set(client_ws.user.id, client_ws);
                     connectType = "private"
 
 
                 } else if (message.type == 'chat' && message.broadcast == 'private') {
                     connectType = "private"
-                    // console.log(message)
                     const targetSocket = clients.get(message.receiver);
-                    // console.log(targetSocket)
-                    // const from = JSON.parse(message.from)
-                    // console.log("from: ", from)
-
-                    // console.log(targetSocket)
-
+                   
 
                     if (targetSocket && targetSocket.readyState == WebSocket.OPEN) {
 
@@ -139,7 +110,6 @@ const socketInit = (server) => {
         const interval = setInterval(() => {
             wss.clients.forEach((client) => {
                 if (client.isAlive == false) {
-                    // client.ping();
                     console.log("Terminating unresponsive client.")
                     return client.terminate()
                 }
@@ -157,12 +127,6 @@ const socketInit = (server) => {
         client_ws.on("close", async (code, reason) => {
             console.log(`A client disconnected, Code - ${code}, Reason - ${reason}`)
 
-            // await Chat.create({
-            //     "sender_id": client_ws.user.id,
-            //     "message": `${client_ws.user.username} left the chat`,
-            //     "broadcast": 'global',
-            //     "type": "left"
-            // })
             if (connectType == "public ") {
                 wss.clients.forEach((client) => {
                     if (client.readyState === WsServer.OPEN) {

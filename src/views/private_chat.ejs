@@ -18,10 +18,12 @@
 </section>
 
 <script>
+
     const form = document.getElementById("form")
     const input = document.getElementById("message-input")
     const socket = new WebSocket(`ws://${window.location.host}`)
     const messages = document.getElementById("messages")
+    console.log("<%= JSON.stringify(chat_with) %>")
 
     socket.onopen = () => {
         socket.send(JSON.stringify({

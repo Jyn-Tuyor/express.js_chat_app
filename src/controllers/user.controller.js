@@ -74,16 +74,26 @@ exports.chatRoom =  async(req, res) => {
     const user = req.session.user;
 
     const chats = await Chat.findAll({ where: { broadcast: 'global'}, include: [{ model: User, as: "sender"} ] });
-    console.log(chats)
+    // console.log(chats)
 
     res.render("chat_room", { user, chats  })
 }
 
 exports.privateChat = async(req, res) => {
     const chat_with = await User.findOne({ where: { id: req.params.id }, include: [{ model: Chat, as: "receivedMessages"}] }) 
-    const user = req.session.user; 
+    const user = await User.findOne({ 
+        where: { id: req.session.user.id },
+        include: [
+            { 
+                model: Chat,
+                as: "sentMessages",
+                where: { receiver_id: req.params.id },
+                required: false
+            }
+        ]
+    }); 
 
-    console.log(chat_with)
+    console.log(user.toJSON())
 
     return res.render("private_chat", { user, chat_with });
 }
