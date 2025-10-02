@@ -72,7 +72,7 @@ const socketInit = (server) => {
                 } else if (message.type == 'join' && message.broadcast == 'private') {
                     
                     client_socket.user = message.user
-                    console.log("user is " + client_socket.user)
+                    console.log("user is " + client_socket.user.username)
                     clients.set(client_socket.user.id, client_socket);
                     connectType = "private"
 
@@ -118,8 +118,6 @@ const socketInit = (server) => {
 
 
                 }
-
-
 
             })
 
