@@ -72,16 +72,16 @@ exports.updateProfile = async (req, res) => {
 
 }
 
-exports.chatRoom =  async(req, res) => {
+exports.chatRoom = async (req, res) => {
     const user = req.session.user;
 
-    const chats = await Chat.findAll({ where: { broadcast: 'global'}, include: [{ model: User, as: "sender"} ] });
+    const chats = await Chat.findAll({ where: { broadcast: 'global' }, include: [{ model: User, as: "sender" }] });
     // console.log(chats)
 
-    res.render("chat_room", { user, chats  })
+    res.render("chat_room", { user, chats })
 }
 
-exports.privateChat = async(req, res) => {
+exports.privateChat = async (req, res) => {
     // const chat_with = await User.findOne({ where: { id: req.params.id }, include: [{ model: Chat, as: "receivedMessages"}] }) 
     // const user = await User.findOne({ 
     //     where: { id: req.session.user.id },
@@ -96,14 +96,23 @@ exports.privateChat = async(req, res) => {
     // }); 
     const receiver_id = req.params.id;
     const sender_id = req.session.user.id;
-    const chat_with = await User.findOne({ where: { id: receiver_id }})
-    const user = await User.findOne({ where: { id: sender_id  }})
-    const chats = await Chat.findAll({ where: { 
-        [Op.or]: [
-            { receiver_id: receiver_id, sender_id: sender_id },
-            { receiver_id: sender_id, sender_id: receiver_id },
+    const chat_with = await User.findOne({ where: { id: receiver_id } })
+    const user = await User.findOne({ where: { id: sender_id } })
+    const chats = await Chat.findAll({
+        where: {
+            [Op.or]: [
+                { receiver_id: receiver_id, sender_id: sender_id },
+                { receiver_id: sender_id, sender_id: receiver_id },
+            ]
+        }, include: [
+            {
+                model: User, as: "sender"
+            },
+            {
+                model: User, as: "receiver"
+            }
         ]
-    }})
+    })
 
     // console.log(user.toJSON())
 

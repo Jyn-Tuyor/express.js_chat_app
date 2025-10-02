@@ -6,7 +6,14 @@
             <h1 class="text-3xl font-bold">Chatting with: <%= chat_with.username %></h1>
         </div>
         <div class="border border-gray-200 rounded-sm p-2 overflow-y-scroll flex-1">
-            <ul id="messages"></ul>
+            <ul id="messages">
+                <% chats.forEach((chat) => { %>
+                    <li>
+                        <%= chat.sender.username %> <%= chat.message %>
+                    </li>
+                <% })%>
+
+            </ul>
 
             <pre>
             </pre>
