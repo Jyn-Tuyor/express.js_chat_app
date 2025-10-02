@@ -7,6 +7,10 @@
         </div>
         <div class="border border-gray-200 rounded-sm p-2 overflow-y-scroll flex-1">
             <ul id="messages"></ul>
+
+            <pre>
+            </pre>
+
         </div>
         <div class="flex gap-2">
             <input type="text" id="message-input" class="flex-1 p-2 border border-gray-200 outline-none rounded-sm"
@@ -23,8 +27,7 @@
     const input = document.getElementById("message-input")
     const socket = new WebSocket(`ws://${window.location.host}`)
     const messages = document.getElementById("messages")
-    console.log("<%= JSON.stringify(chat_with) %>")
-
+    console.log("<%= JSON.stringify(chats) %>")
     socket.onopen = () => {
         socket.send(JSON.stringify({
             type: 'join',

@@ -1,6 +1,8 @@
 const UserProfile = require("../models/UserProfile")
 const User = require("../models/User")
 const Chat = require("../models/Chat")
+const { Op } = require("sequelize")
+
 
 exports.createProfile = async (req, res) => {
     try {
@@ -80,20 +82,30 @@ exports.chatRoom =  async(req, res) => {
 }
 
 exports.privateChat = async(req, res) => {
-    const chat_with = await User.findOne({ where: { id: req.params.id }, include: [{ model: Chat, as: "receivedMessages"}] }) 
-    const user = await User.findOne({ 
-        where: { id: req.session.user.id },
-        include: [
-            { 
-                model: Chat,
-                as: "sentMessages",
-                where: { receiver_id: req.params.id },
-                required: false
-            }
+    // const chat_with = await User.findOne({ where: { id: req.params.id }, include: [{ model: Chat, as: "receivedMessages"}] }) 
+    // const user = await User.findOne({ 
+    //     where: { id: req.session.user.id },
+    //     include: [
+    //         { 
+    //             model: Chat,
+    //             as: "sentMessages",
+    //             where: { receiver_id: req.params.id },
+    //             required: false
+    //         }
+    //     ]
+    // }); 
+    const receiver_id = req.params.id;
+    const sender_id = req.session.user.id;
+    const chat_with = await User.findOne({ where: { id: receiver_id }})
+    const user = await User.findOne({ where: { id: sender_id  }})
+    const chats = await Chat.findAll({ where: { 
+        [Op.or]: [
+            { receiver_id: receiver_id, sender_id: sender_id },
+            { receiver_id: sender_id, sender_id: receiver_id },
         ]
-    }); 
+    }})
 
-    console.log(user.toJSON())
+    // console.log(user.toJSON())
 
-    return res.render("private_chat", { user, chat_with });
+    return res.render("private_chat", { user, chat_with, chats });
 }
