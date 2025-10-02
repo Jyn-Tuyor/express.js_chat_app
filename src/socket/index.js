@@ -13,34 +13,35 @@ const socketInit = (server) => {
     const connectionManager = new ConnectionManager(wss);
     
 
-    wss.on("connection", (client_socket) => {
+    wss.on("connection", (client_ws) => {
         try {
-            client_socket.isAlive = true;
-            client_socket.on('pong', () => {
+            client_ws.isAlive = true;
+            client_ws.on('pong', () => {
                 console.log("Received a pong.")
-                client_socket.isAlive = true
+                client_ws.isAlive = true
             })
 
-            client_socket.on('message', async (raw) => {
+            client_ws.on('message', async (raw) => {
                 const message = JSON.parse(raw.toString())
-                // client_socket.user = message.user
+                // client_ws.user = message.user
 
-                // console.log("user is " + client_socket.user)
+                // console.log("user is " + client_ws.user)
 
-                // clients.set(client_socket.user.id, client_socket);
+                // clients.set(client_ws.user.id, client_ws);
 
                 if (message.type == 'join' && message.broadcast == 'public') {
-                    client_socket.user = message.user
+                    client_ws.user = message.user
 
-                    console.log("user is " + client_socket.user)
+                    // console.log("user is " + client_ws.user)
 
-                    clients.set(client_socket.user.id, client_socket);
-                    // client_socket.id = message.id
+                    // clients.set(client_ws.user.id, client_ws);
+                    connectionManager.addClient(client_ws.user.id, client_ws)
+                    // client_ws.id = message.id
                     connectType = "public"
 
                     await Chat.create({
-                        "sender_id": client_socket.user.id,
-                        "message": `${client_socket.user.username} joined the chat`,
+                        "sender_id": client_ws.user.id,
+                        "message": `${client_ws.user.username} joined the chat`,
                         "broadcast": 'global',
                         "type": "join"
                     })
@@ -55,11 +56,11 @@ const socketInit = (server) => {
                         }
                     })
                 } else if (message.type == 'chat' && message.broadcast == 'public') {
-                    console.log(message)
+                    // console.log(message)
                     connectType = "public"
                     // store the chat to db
                     await Chat.create({
-                        "sender_id": client_socket.user.id,
+                        "sender_id": client_ws.user.id,
                         "message": message.message,
                         "broadcast": 'global',
                         "type": "chat"
@@ -75,9 +76,9 @@ const socketInit = (server) => {
                     })
                 } else if (message.type == 'join' && message.broadcast == 'private') {
                     
-                    client_socket.user = message.user
-                    console.log("user is " + client_socket.user.username)
-                    clients.set(client_socket.user.id, client_socket);
+                    client_ws.user = message.user
+                    // console.log("user is " + client_ws.user.username)
+                    clients.set(client_ws.user.id, client_ws);
                     connectType = "private"
 
 
@@ -89,7 +90,7 @@ const socketInit = (server) => {
                     // const from = JSON.parse(message.from)
                     // console.log("from: ", from)
 
-                    console.log(targetSocket)
+                    // console.log(targetSocket)
 
 
                     if (targetSocket && targetSocket.readyState == WebSocket.OPEN) {
@@ -104,15 +105,15 @@ const socketInit = (server) => {
                         console.log("sended")
 
                         // await Chat.create({
-                        //     "sender_id": client_socket.user.id,
+                        //     "sender_id": client_ws.user.id,
                         //     "message": message.message,
                         //     "broadcast": 'global',
                         //     "type": "chat"
                         // })
                     } else {
-                        // console.log("socket id: " + client_socket.user.id)
+                        // console.log("socket id: " + client_ws.user.id)
                         await Chat.create({
-                            "sender_id": client_socket.user.id,
+                            "sender_id": client_ws.user.id,
                             "receiver_id": message.receiver,
                             "message": message.message,
                             "broadcast": 'private',
@@ -129,7 +130,7 @@ const socketInit = (server) => {
             console.log(`Error processing data: ${err}`)
         }
 
-        client_socket.on("error", (error) => {
+        client_ws.on("error", (error) => {
             console.log(`Websocket error: ${error}`)
         })
 
@@ -153,12 +154,12 @@ const socketInit = (server) => {
         }, 30000)
 
 
-        client_socket.on("close", async (code, reason) => {
+        client_ws.on("close", async (code, reason) => {
             console.log(`A client disconnected, Code - ${code}, Reason - ${reason}`)
 
             // await Chat.create({
-            //     "sender_id": client_socket.user.id,
-            //     "message": `${client_socket.user.username} left the chat`,
+            //     "sender_id": client_ws.user.id,
+            //     "message": `${client_ws.user.username} left the chat`,
             //     "broadcast": 'global',
             //     "type": "left"
             // })
@@ -167,14 +168,14 @@ const socketInit = (server) => {
                     if (client.readyState === WsServer.OPEN) {
                         client.send(JSON.stringify({
                             type: 'left',
-                            message: `${client_socket.user.username} left the chat.`
+                            message: `${client_ws.user.username} left the chat.`
                         }))
                     }
                 })
             }
 
             clearInterval(interval)
-            wss.clients.delete(client_socket);
+            wss.clients.delete(client_ws);
         })
 
     })

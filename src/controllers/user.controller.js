@@ -80,7 +80,10 @@ exports.chatRoom =  async(req, res) => {
 }
 
 exports.privateChat = async(req, res) => {
-    const chat_with = await User.findOne({ where: { id: req.params.id }}) 
+    const chat_with = await User.findOne({ where: { id: req.params.id }, include: [{ model: Chat, as: "receivedMessages"}] }) 
     const user = req.session.user; 
+
+    console.log(chat_with)
+
     return res.render("private_chat", { user, chat_with });
 }
