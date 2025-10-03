@@ -3,8 +3,12 @@
     <div class="h-full flex flex-col w-[300px]  border border-gray-200">
 
         <div class="w-full px-4 py-6 bg-blue-600 flex flex-col">
-            <span class="text-gray-50 font-bold"><%= chat_with.username %></span>
-            <span class="text-gray-400 text-xs "><%= chat_with.createdAt %></span>
+            <span class="text-gray-50 font-bold">
+                <%= chat_with.username %>
+            </span>
+            <span class="text-gray-400 text-xs ">
+                <%= chat_with.createdAt %>
+            </span>
         </div>
 
 
@@ -25,8 +29,12 @@
                 <% chats.forEach((chat)=> { %>
                     <li class="p-4 border-t-1  border-gray-300 flex flex-col text-gray-800">
                         <div class="flex flex-row justify-between">
-                            <span class="text-gray-400 text-sm"><%= chat.sender.username %></span>
-                            <span class="text-xs text-gray-400" id="date"><%= chat.createdAt %></span>
+                            <span class="text-gray-400 text-sm">
+                                <%= chat.sender.username %>
+                            </span>
+                            <span class="text-xs text-gray-400" id="date">
+                                <%= chat.createdAt %>
+                            </span>
                         </div>
                         <%= chat.message %>
                     </li>
@@ -56,7 +64,6 @@
     const date = document.getElementById("date")
     const message_box = document.getElementById("message-box")
 
-    message_box.scrollTop = message_box.scrollHeight
 
 
     socket.onopen = () => {
@@ -68,7 +75,7 @@
                 id: parseInt("<%= user.id %>")
             }
         }))
-        console.log("connected")
+        message_box.scrollTop = message_box.scrollHeight
     }
 
     socket.onmessage = (event) => {
@@ -79,9 +86,26 @@
         console.log(data)
 
 
-        li.innerHTML = `<span class="bg-yellow-200 p-1 rounded-sm">${data.from.username}</span> ${data.message}`
+        // li.innerHTML = `<span class="bg-yellow-200 p-1 rounded-sm">${data.from.username}</span> ${data.message}`
+
+        li.classList.add("p-4")
+        li.classList.add("border-t-1")
+        li.classList.add("border-gray-300")
+        li.classList.add("flex")
+        li.classList.add("flex-col")
+        li.classList.add("text-gray-800")
+        li.innerHTML = `
+            <div class="flex flex-row justify-between">
+                <span class="text-gray-400 text-sm">${data.from.username}</span>
+                <span class="text-xs text-gray-400" id="date">${new Date()}</span>
+            </div>
+            <p>${data.message}</p>
+        `
+
         messages.append(li)
         input.value = ''
+
+        message_box.scrollTop = message_box.scrollHeight
 
     }
 
@@ -99,8 +123,8 @@
         }))
 
         const li = document.createElement("li");
-        
-       
+
+
         // li.innerHTML = `<span class="bg-green-200 p-1 rounded-sm"><%= user.username %></span> ${message}`
         li.classList.add("p-4")
         li.classList.add("border-t-1")
@@ -108,10 +132,10 @@
         li.classList.add("flex")
         li.classList.add("flex-col")
         li.classList.add("text-gray-800")
-        li.innerHTML =  `
+        li.innerHTML = `
             <div class="flex flex-row justify-between">
                 <span class="text-gray-400 text-sm"><%= user.username %></span>
-                <span class="text-xs text-gray-400" id="date">${ new Date()  }</span>
+                <span class="text-xs text-gray-400" id="date">${new Date()}</span>
             </div>
             <p>${message}</p>
         `
