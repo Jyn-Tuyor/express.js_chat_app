@@ -75,12 +75,13 @@ const socketInit = (server) => {
 
                         console.log("sended")
 
-                        // await Chat.create({
-                        //     "sender_id": client_ws.user.id,
-                        //     "message": message.message,
-                        //     "broadcast": 'global',
-                        //     "type": "chat"
-                        // })
+                        await Chat.create({
+                            "sender_id": client_ws.user.id,
+                            "receiver_id": message.receiver,
+                            "message": message.message,
+                            "broadcast": 'private',
+                            "type": "chat"
+                        })
                     } else {
                         // console.log("socket id: " + client_ws.user.id)
                         await Chat.create({
