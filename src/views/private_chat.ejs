@@ -3,16 +3,18 @@
     <form id="form" class="p-4 bg-white rounded-sm sm:w-1/2  flex flex-col gap-4 justify-between">
         <div class="flex gap-2">
             <a href="/users/dashboard" class="box p-2 rounded-sm hover:shadow-md"><i>back</i></a>
-            <h1 class="text-3xl font-bold">Chatting with: <%= chat_with.username %></h1>
+            <h1 class="text-3xl font-bold">Chatting with: <%= chat_with.username %>
+            </h1>
         </div>
         <div class="border border-gray-200 rounded-sm p-2 overflow-y-scroll flex-1">
             <ul id="messages" class="flex  flex-col gap-2">
-                <% chats.forEach((chat) => { %>
+                <% chats.forEach((chat)=> { %>
                     <li>
-                        <span class="<%= user.id_number == chat.sender.id_number ? "bg-green-200 p-1 rounded-sm": "bg-yellow-200 p-1 rounded-sm" %>
-                        "><%= chat.sender.username %></span> <%= chat.message %>
+                        <span class="<%= (user.id_number == chat.sender.id_number) ? "bg-green-200 p-1 rounded-sm": "bg-yellow-200 p-1 rounded-sm" %>
+                            "><%= chat.sender.username %></span>
+                        <%= chat.message %>
                     </li>
-                <% })%>
+                    <% })%>
 
             </ul>
 
@@ -49,11 +51,16 @@
     }
 
     socket.onmessage = (event) => {
-        // console.log(event)
-
         const li = document.createElement("li");
         const data = JSON.parse(event.data)
-        li.innerHTML =  data.message;
+        // li.innerHTML = 
+
+        console.log(data)
+
+
+        li.innerHTML = `<span class="bg-yellow-200 p-1 rounded-sm">${data.from.username}</span> ${data.message}`
+
+
         messages.append(li)
         input.value = ''
 
@@ -73,7 +80,7 @@
         }))
 
         const li = document.createElement("li");
-        li.innerHTML = message;
+        li.innerHTML = `<span class="bg-green-200 p-1 rounded-sm"><%= user.username %></span> ${message}`
         messages.append(li)
         input.value = ''
     })

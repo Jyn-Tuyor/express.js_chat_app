@@ -62,14 +62,13 @@ const socketInit = (server) => {
                 } else if (message.type == 'chat' && message.broadcast == 'private') {
                     connectType = "private"
                     const targetSocket = clients.get(message.receiver);
-                   
 
                     if (targetSocket && targetSocket.readyState == WebSocket.OPEN) {
 
                         targetSocket.send(JSON.stringify({
                             "type": "chat",
                             "broadcast": "private",
-                            // "from": from,
+                            "from": client_ws.user,
                             "message": message.message
                         }))
 
