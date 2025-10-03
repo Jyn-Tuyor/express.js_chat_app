@@ -87,7 +87,7 @@
         e.preventDefault();
         const message = input.value;
 
-        socket.send(JSON.stringify({ type: 'chat', user, message }))
+        socket.send(JSON.stringify({ type: 'chat', broadcast: 'public', user, message }))
 
         input.value = ''
     })
