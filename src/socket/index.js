@@ -127,7 +127,7 @@ const socketInit = (server) => {
         client_ws.on("close", async (code, reason) => {
             console.log(`A client disconnected, Code - ${code}, Reason - ${reason}`)
 
-            if (connectType == "public ") {
+            if ( connectType == "public ") {
                 wss.clients.forEach((client) => {
                     if (client.readyState === WsServer.OPEN) {
                         client.send(JSON.stringify({

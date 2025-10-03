@@ -1,15 +1,18 @@
 <section class="h-[100vh] flex justify-center py-4 px-2 ">
 
-    <form id="form" class="p-4 box rounded-sm sm:w-1/2  flex flex-col gap-4 justify-between">
+    <form id="form" class="p-4 bg-white rounded-sm sm:w-1/2  flex flex-col gap-4 justify-between">
         <div class="flex gap-2">
             <a href="/users/dashboard" class="box p-2 rounded-sm hover:shadow-md"><i>back</i></a>
             <h1 class="text-3xl font-bold">Chatting with: <%= chat_with.username %></h1>
         </div>
         <div class="border border-gray-200 rounded-sm p-2 overflow-y-scroll flex-1">
-            <ul id="messages">
+            <ul id="messages" class="flex  flex-col gap-2">
                 <% chats.forEach((chat) => { %>
                     <li>
-                        <%= chat.sender.username %> <%= chat.message %>
+                        <span class="<% if (user.id_number == chat.sender.id_number) { %>
+                            bg-green-200 p-1 rounded-sm 
+                            <% } %>
+                        "><%= chat.sender.username %></span> <%= chat.message %>
                     </li>
                 <% })%>
 
