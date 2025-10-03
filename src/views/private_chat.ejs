@@ -9,9 +9,7 @@
             <ul id="messages" class="flex  flex-col gap-2">
                 <% chats.forEach((chat) => { %>
                     <li>
-                        <span class="<% if (user.id_number == chat.sender.id_number) { %>
-                            bg-green-200 p-1 rounded-sm 
-                            <% } %>
+                        <span class="<%= user.id_number == chat.sender.id_number ? "bg-green-200 p-1 rounded-sm": "bg-yellow-200 p-1 rounded-sm" %>
                         "><%= chat.sender.username %></span> <%= chat.message %>
                     </li>
                 <% })%>
