@@ -1,6 +1,20 @@
-<section class="h-[100vh] flex justify-center py-4 px-2 ">
+<section class="h-[100vh] flex justify-between  gap-2">
 
-    <form id="form" class="shadow-lg  bg-white rounded-sm sm:w-1/2  flex flex-col gap-4 justify-between">
+    <div class="h-full flex flex-col w-[300px]  border border-gray-200">
+
+        <div class="w-full px-4 py-6 bg-blue-600 flex flex-col">
+            <span class="text-gray-50 font-bold"><%= chat_with.username %></span>
+            <span class="text-gray-400 text-xs "><%= chat_with.createdAt %></span>
+        </div>
+
+
+        <div class="bg-gray-100 p-2">
+            <span class="text-gray-400 text-sm">ID: <%= chat_with.id_number %> </span>
+        </div>
+
+    </div>
+
+    <form id="form" class="flex-1 shadow-md  bg-white rounded-sm sm:w-1/2  flex flex-col gap-4 justify-between">
         <!-- <div class="flex gap-2">
             <a href="/users/dashboard" class="box p-2 rounded-sm hover:shadow-md"><i>back</i></a>
             <h1 class="text-3xl font-bold">Chatting with: <%= chat_with.username %>
@@ -9,10 +23,10 @@
         <div class="overflow-y-scroll flex-1">
             <ul id="messages" class="flex  flex-col">
                 <% chats.forEach((chat)=> { %>
-                    <li class="p-4 border-t-1  border-gray-400 flex flex-col text-gray-800">
-                        <div>
-                            <span class="text-gray-400 font-bold text-sm"><%= chat.sender.username %></span>
-                            <span class="text-xs text-gray-400"><%= chat.createdAt %></span>
+                    <li class="p-4 border-t-1  border-gray-300 flex flex-col text-gray-800">
+                        <div class="flex flex-row justify-between">
+                            <span class="text-gray-400 text-sm"><%= chat.sender.username %></span>
+                            <span class="text-xs text-gray-400" id="date"><%= chat.createdAt %></span>
                         </div>
                         <%= chat.message %>
                     </li>
@@ -24,10 +38,10 @@
             </pre>
 
         </div>
-        <div class="flex gap-2">
-            <input type="text" id="message-input" class="flex-1 p-2 border border-gray-200 outline-none rounded-sm"
+        <div class="flex gap-2 py-2 px-4">
+            <input type="text" id="message-input" class="flex-1 p-2 border border-gray-200 outline-none rounded-lg"
                 placeholder="Enter a message">
-            <button type="submit" class="p-2 box text-black  cursor-pointer">Send</button>
+            <button type="submit" class="p-2 box text-black cursor-pointer rounded-lg">Send</button>
         </div>
 
     </form>
@@ -39,7 +53,9 @@
     const input = document.getElementById("message-input")
     const socket = new WebSocket(`ws://${window.location.host}`)
     const messages = document.getElementById("messages")
-    console.log("<%= JSON.stringify(chats) %>")
+    const date = document.getElementById("date")
+
+
     socket.onopen = () => {
         socket.send(JSON.stringify({
             type: 'join',
