@@ -111,10 +111,12 @@ exports.privateChat = async (req, res) => {
             {
                 model: User, as: "receiver"
             }
-        ]
+        ],
+        order: [['createdAt', 'DESC']],
+        limit: 10
     })
 
-    // console.log(user.toJSON())
+    chats.reverse()
 
     return res.render("private_chat", { user, chat_with, chats });
 }
