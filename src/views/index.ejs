@@ -1,16 +1,22 @@
-<form action="/login" method="post" class="h-[100vh] flex justify-center py-4 px-2 items-center shadow-md rounded-sm">
+<form action="/login" method="post" class="py-5  h-[100vh] flex justify-center mt-2  shadow-lg">
+    <div class="w-[380px] h-full flex flex-col gap-4 bg-[#282828] rounded-lg overflow-y-hidden">
 
-    <div class="p-4 rounded-sm box  w-[380px] flex flex-col gap-4 ">
-        <div>
-            <label for="" class="block text-black">ID</label>
-            <input type="text" placeholder="ID" name="id_number"
-                class="w-full p-2 rounded-sm border border-gray-500 bg-white outline-none focus:ring focus:ring-blue-500 duration-100">
+        <!-- Header -->
+
+        <div class="bg-[#1d2021] px-4 py-12">
+            <h1 class="text-center text-2xl font-bold gray">CHAT APP OR SMTHG</h1>
         </div>
 
-        <div>
-            <label for="" class="block text-black">Password</label>
+        <div class="px-4  ">
+            <label for="" class="block text-white">ID</label>
+            <input type="text" placeholder="ID Number" name="id_number"
+                class="text-gray-700  w-full p-2 rounded-sm border border-gray-500 bg-white outline-none focus:ring focus:ring-blue-500 duration-100">
+        </div>
+
+        <div class="px-4  ">
+            <label for="" class="block text-white">Password</label>
             <input type="password" placeholder="Password" name="password"
-                class="w-full p-2 rounded-sm border border-gray-500 bg-white outline-none focus:ring focus:ring-blue-500 duration-100">
+                class="text-gray-700 w-full p-2 rounded-sm border border-gray-500 bg-white outline-none focus:ring focus:ring-blue-500 duration-100">
         </div>
 
         <!-- errors -->
@@ -27,12 +33,13 @@
 
             <% } %>
 
-                <div class="flex flex-row gap-2">
-                    <button
-                        class="box flex-1 text-black p-2 font-bold  cursor-pointer">Log
+
+                <div class="flex flex-col gap-2 p-4  ">
+                    <button class=" flex-1 text-white px-2 py-4 font-bold  cursor-pointer bg-[#1d2021]">Log
                         In</button>
-                    <a class="box text-center flex-1 text-black  font-bold p-2  cursor-pointer  "
-                        href="/register">Register</a>
+                    <!-- <a class="text-center flex-1 text-white  font-bold px-2 py-4  cursor-pointer bg-[#1d2021] "
+                        href="/register">Register</a> -->
+                    <a class="text-sm italic text-blue-600 underline" href="/register">Or register here.</a>
                 </div>
 
     </div>
