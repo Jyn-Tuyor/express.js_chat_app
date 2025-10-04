@@ -29,15 +29,15 @@ const socketInit = (server) => {
                     connectionManager.addClient(client_ws.user.id, client_ws)
                     connectType = "public"
 
-                    await Chat.create({
-                        "sender_id": client_ws.user.id,
-                        "message": `${client_ws.user.username} joined the chat`,
-                        "broadcast": 'global',
-                        "type": "join"
-                    })
+                    // await Chat.create({
+                    //     "sender_id": client_ws.user.id,
+                    //     "message": `${client_ws.user.username} joined the chat`,
+                    //     "broadcast": 'global',
+                    //     "type": "join"
+                    // })
 
                     
-                    connectionManager.broadcastPublicAlert(message);
+                    // connectionManager.broadcastPublicAlert(message);
 
 
                 } else if (message.type == 'chat' && message.broadcast == 'public') {
@@ -128,14 +128,14 @@ const socketInit = (server) => {
             console.log(`A client disconnected, Code - ${code}, Reason - ${reason}`)
 
             if ( connectType == "public ") {
-                wss.clients.forEach((client) => {
-                    if (client.readyState === WsServer.OPEN) {
-                        client.send(JSON.stringify({
-                            type: 'left',
-                            message: `${client_ws.user.username} left the chat.`
-                        }))
-                    }
-                })
+                // wss.clients.forEach((client) => {
+                //     if (client.readyState === WsServer.OPEN) {
+                //         client.send(JSON.stringify({
+                //             type: 'left',
+                //             message: `${client_ws.user.username} left the chat.`
+                //         }))
+                //     }
+                // })
             }
 
             clearInterval(interval)

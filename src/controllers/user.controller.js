@@ -75,7 +75,17 @@ exports.updateProfile = async (req, res) => {
 exports.chatRoom = async (req, res) => {
     const user = req.session.user;
 
-    const chats = await Chat.findAll({ where: { broadcast: 'global' }, include: [{ model: User, as: "sender" }] });
+    const chats = await Chat.findAll({ 
+        where: { 
+            broadcast: 'global' 
+        }, 
+        include: [
+        { 
+            model: User,
+            as: "sender" 
+        }],
+        limit: 30 
+    });
     // console.log(chats)
 
     res.render("chat_room", { user, chats })
