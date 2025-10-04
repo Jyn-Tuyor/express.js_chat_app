@@ -1,42 +1,44 @@
-<section class="h-[100vh] flex justify-between  gap-2">
+<section class="h-[100vh] glass-borders flex justify-between  gap-2">
 
-    <div class="h-full flex flex-col w-[300px]  border border-gray-200  backdrop-blur-md">
+    <div class="h-full flex flex-col w-[300px] styled-container aero-borders border border-gray-200">
 
-        <div class="w-full px-4 py-6 bg-[#1d2021] flex flex-col">
-            <span class="text-gray-50 font-bold">
+        <h1>
+            <span class="text-gray-50 font-bold block">
                 <%= chat_with.username %>
             </span>
-            <span class="text-gray-400 text-xs ">
+            <span class="text-gray-400 text-xs block">
                 <%= chat_with.createdAt %>
             </span>
-        </div>
+        </h1>
 
 
-        <div class="bg-gray-100 p-2">
+        <div class="aero-borders rounded-sm p-2 mt-2">
             <span class="text-gray-400 text-sm">ID: <%= chat_with.id_number %> </span>
         </div>
 
     </div>
 
-    <form id="form" class="flex-1 shadow-md  backdrop-blur-2xl  rounded-sm sm:w-1/2  flex flex-col gap-4 justify-between">
+    <form id="form" class="flex-1 message-box flex flex-col gap-4 justify-between">
         <!-- <div class="flex gap-2">
             <a href="/users/dashboard" class="box p-2 rounded-sm hover:shadow-md"><i>back</i></a>
             <h1 class="text-3xl font-bold">Chatting with: <%= chat_with.username %>
             </h1>
         </div> -->
         <div id="message-box" class="overflow-y-scroll flex-1">
-            <ul id="messages" class="flex  flex-col">
+            <ul id="messages" class="p-2 text-black">
                 <% chats.forEach((chat)=> { %>
-                    <li class="p-4 border-t-1  border-gray-300 flex flex-col text-gray-800">
+                    <li class="my-4">
                         <div class="flex flex-row justify-between">
-                            <span class="text-[#98971a] font-bold text-md">
+                            <span class="text-sm">
                                 <%= chat.sender.username %>
                             </span>
-                            <span class="text-xs text-gray-400" id="date">
+                            <span class="text-xs" id="date">
                                 <%= chat.createdAt %>
                             </span>
                         </div>
-                        <%= chat.message %>
+                        <strong>
+                            <%= chat.message %>
+                        </strong>
                     </li>
                     <% })%>
 
@@ -47,7 +49,7 @@
 
         </div>
         <div class="flex gap-2 py-2 px-4">
-            <input type="text" id="message-input" class="flex-1 p-2 border border-gray-200 outline-none rounded-lg"
+            <input type="text" id="message-input" class="w-full aero-borders rounded-md bg-transparent outline-none p-2"
                 placeholder="Enter a message">
             <button type="submit" class="p-2 box text-black cursor-pointer rounded-lg">Send</button>
         </div>
@@ -88,18 +90,13 @@
 
         // li.innerHTML = `<span class="bg-yellow-200 p-1 rounded-sm">${data.from.username}</span> ${data.message}`
 
-        li.classList.add("p-4")
-        li.classList.add("border-t-1")
-        li.classList.add("border-gray-300")
-        li.classList.add("flex")
-        li.classList.add("flex-col")
-        li.classList.add("text-gray-800")
+        li.classList.add("my-4")
         li.innerHTML = `
             <div class="flex flex-row justify-between">
-                <span class="text-gray-400 text-sm">${data.from.username}</span>
-                <span class="text-xs text-gray-400" id="date">${new Date()}</span>
+                <span class="text-sm">${data.from.username}</span>
+                <span class="text-xs" id="date">${new Date()}</span>
             </div>
-            <p>${data.message}</p>
+            <strong>${data.message}</strong>
         `
 
         messages.append(li)
@@ -126,18 +123,13 @@
 
 
         // li.innerHTML = `<span class="bg-green-200 p-1 rounded-sm"><%= user.username %></span> ${message}`
-        li.classList.add("p-4")
-        li.classList.add("border-t-1")
-        li.classList.add("border-gray-300")
-        li.classList.add("flex")
-        li.classList.add("flex-col")
-        li.classList.add("text-gray-800")
+        li.classList.add("my-4")
         li.innerHTML = `
             <div class="flex flex-row justify-between">
-                <span class="text-gray-400 text-sm"><%= user.username %></span>
-                <span class="text-xs text-gray-400" id="date">${new Date()}</span>
+                <span class="text-sm"><%= user.username %></span>
+                <span class="text-xs" id="date">${new Date()}</span>
             </div>
-            <p>${message}</p>
+            <strong>${message}</strong>
         `
         messages.append(li)
         input.value = ''
