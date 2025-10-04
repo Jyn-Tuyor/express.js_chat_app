@@ -1,20 +1,20 @@
-<section class="dashboard h-[100vh] flex justify-center p-8">
-
-    <div class="bg-[#282828] w-full p-4 rounded-sm flex flex-col sm:flex-row gap-12 p-2">
-
-        <div>
-            <h1>Welcome back, <b>
-                    <%= user.username %>
-                </b>!</h1>
+<section class="h-[100vh] flex flex-col items-center">
+    <div class="w-100 flex-1 glass-borders">
 
 
+
+        <div class="styled-container aero-borders">
             <div>
+                <h1 class="">Welcome back, <%= user.username %>!</h1>
+            </div>
+
+          
+            <!-- <div>
                 <span class="text-blue-600 underline"><i>App links</i></span>
 
 
                 <ul>
                     <li><a href="/users/chat-room" class="hover:underline">Chat room</a></li>
-                    <!-- <li><a href="" class="hover:underline">Private chat</a></li> -->
                     <li>
                         <% if (user.profile) { %>
                             <a class="hover:underline" href="/users/my-profile">
@@ -34,45 +34,45 @@
                         </form>
                     </li>
                 </ul>
-            </div>
+            </div> -->
 
         </div>
 
 
 
-        <!-- Search profile section -->
-        <div class="bg-gray-50 rounded-sm shadow-md border-b-4 border-r-4 flex-1  p-2 overflow-y-scroll">
 
-            <!-- Form -->
+
+        <!-- Search profile section -->
+        <div class="styled-container aero-borders mt-4  rounded-sm shadow-md border-b-4 border-r-4 flex-1  p-2 overflow-y-auto">
+
             <div>
                 <form>
-                    <input type="text" name="user_id" placeholder="User ID"
-                        class="text-gray-800 text-sm bg-gray-100 rounded-sm p-2 outline-none">
+                    <input type="text" name="user_id" placeholder="Search by ID"
+                        class="text-gray-800 text-sm bg-gray-100 rounded-sm p-2 outline-none w-full mb-2">
 
-                    <button class="bg-teal-700 text-white rounded-sm p-2 text-sm">Search</button>
+                    <button class="styled-button">Search</button>
                 </form>
             </div>
 
-            <!-- Results -->
-            <div class="mt-4 flex flex-col gap-4 ">
+            <div class="mt-4 flex flex-col gap-4  glass-borders">
 
 
                 <% if (typeof fetched_users != "undefined" && fetched_users.length > 0) { %>
 
                 <% fetched_users.forEach((user) => { %>
-                    <div class="bg-gray-100 p-4 rounded-sm flex flex-col ">
+                    <div class="p-2">
                         <div>
                             <ul>
                                 <li>
-                                    <span><%= user.username %></span>
+                                    <span class="text-white"><%= user.username %></span>
                                 </li>
 
                                 <li>
-                                    <span class="text-gray-400 text-sm">ID: <%= user.id_number %></span>
+                                    <span class="text-gray-400 text-xs">ID: <%= user.id_number %></span>
                                 </li>
                             </ul>
                         </div>
-                        <a class="bg-teal-600 w-fit rounded-sm p-2 text-gray-50 shadow-sm cursor-pointer text-sm" href="/users/private/chat/<%= user.id  %>">Chat with
+                        <a class="styled-button" href="/users/private/chat/<%= user.id  %>">Chat with
                             this person</a>
                     </div>
                 <% }) %>
@@ -90,8 +90,8 @@
 
 </section>
 
-<script>
+<!-- <script>
     document.addEventListener("DOMContentLoaded", () => {
         console.log("<%user%>")
     })
-</script>
+</script> -->
