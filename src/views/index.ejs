@@ -1,47 +1,54 @@
-<form action="/login" method="post" class="py-5  h-[100vh] flex justify-center mt-2  shadow-lg">
-    <div class="w-[380px] h-full flex flex-col gap-4 bg-[#282828] rounded-lg overflow-y-hidden">
+<form action="/login" method="post" class="py-5 flex justify-center mt-2 flex-col items-center">
 
-        <!-- Header -->
+    <div class="glass-borders">
 
-        <div class="bg-[#1d2021] px-4 py-12">
-            <h1 class="text-center text-2xl font-bold gray">CHAT APP OR SMTHG</h1>
-        </div>
+        <div class="w-[380px] styled-container aero-borders flex flex-col gap-4 backdrop-blur-md">
+            <header>
+                <h1 class="text-center text-2xl font-bold gray">Chat Room</h1>
+            </header>
 
-        <div class="px-4  ">
-            <label for="" class="block text-white">ID</label>
-            <input type="text" placeholder="ID Number" name="id_number"
-                class="text-gray-700  w-full p-2 rounded-sm border border-gray-500 bg-white outline-none focus:ring focus:ring-blue-500 duration-100">
-        </div>
+            <div class="px-4  ">
+                <!-- <label for="" class="block text-white">ID</label> -->
+                <input type="text" placeholder="ID Number" name="id_number"
+                    class="text-gray-700  w-full p-2 border-1 border-gray-500 bg-white outline-none focus:ring focus:ring-blue-500 duration-100">
+            </div>
 
-        <div class="px-4  ">
-            <label for="" class="block text-white">Password</label>
-            <input type="password" placeholder="Password" name="password"
-                class="text-gray-700 w-full p-2 rounded-sm border border-gray-500 bg-white outline-none focus:ring focus:ring-blue-500 duration-100">
-        </div>
+            <div class="px-4  ">
+                <input type="password" placeholder="Password" name="password"
+                    class="text-gray-700  w-full p-2 border-1 border-gray-500 bg-white outline-none focus:ring focus:ring-blue-500 duration-100">
 
-        <!-- errors -->
+            </div>
 
-        <% if (typeof errors !="undefined" ) { %>
-            <ul class="text-red-500 bg-red-100 rounded-sm p-2 text-sm border">
+            <!-- errors -->
 
-                <% errors.forEach(error=> { %>
-                    <li>
-                        <%= error %>
-                    </li>
-                    <% }) %>
-            </ul>
+            <% if (typeof errors !="undefined" ) { %>
+                <ul class="text-red-500 bg-red-100 rounded-sm p-2 text-sm border">
 
-            <% } %>
+                    <% errors.forEach(error=> { %>
+                        <li>
+                            <%= error %>
+                        </li>
+                        <% }) %>
+                </ul>
+
+                <% } %>
 
 
-                <div class="flex flex-col gap-2 p-4  ">
-                    <button class=" flex-1 text-white px-2 py-4 font-bold  cursor-pointer bg-[#1d2021]">Log
-                        In</button>
-                    <!-- <a class="text-center flex-1 text-white  font-bold px-2 py-4  cursor-pointer bg-[#1d2021] "
+                    <div class="flex flex-col gap-2 p-4  ">
+                        <button class="styled-button">Log
+                            In</button>
+                        <!-- <a class="text-center flex-1 text-white  font-bold px-2 py-4  cursor-pointer bg-[#1d2021] "
                         href="/register">Register</a> -->
-                    <a class="text-sm italic text-blue-600 underline" href="/register">Or register here.</a>
-                </div>
+                    </div>
+        </div>
 
+
+
+    </div>
+    <div class="glass-borders w-[380px]">
+        <div class="styled-container aero-borders text-center">
+            <a class="text-sm text-white" href="/register">Or register here.</a>
+        </div>
     </div>
 
 </form>

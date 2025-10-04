@@ -1,8 +1,8 @@
 <section class="h-[100vh] flex justify-between  gap-2">
 
-    <div class="h-full flex flex-col w-[300px]  border border-gray-200">
+    <div class="h-full flex flex-col w-[300px]  border border-gray-200  backdrop-blur-md">
 
-        <div class="w-full px-4 py-6 bg-blue-600 flex flex-col">
+        <div class="w-full px-4 py-6 bg-[#1d2021] flex flex-col">
             <span class="text-gray-50 font-bold">
                 <%= chat_with.username %>
             </span>
@@ -18,7 +18,7 @@
 
     </div>
 
-    <form id="form" class="flex-1 shadow-md  bg-white rounded-sm sm:w-1/2  flex flex-col gap-4 justify-between">
+    <form id="form" class="flex-1 shadow-md  backdrop-blur-2xl  rounded-sm sm:w-1/2  flex flex-col gap-4 justify-between">
         <!-- <div class="flex gap-2">
             <a href="/users/dashboard" class="box p-2 rounded-sm hover:shadow-md"><i>back</i></a>
             <h1 class="text-3xl font-bold">Chatting with: <%= chat_with.username %>
@@ -29,7 +29,7 @@
                 <% chats.forEach((chat)=> { %>
                     <li class="p-4 border-t-1  border-gray-300 flex flex-col text-gray-800">
                         <div class="flex flex-row justify-between">
-                            <span class="text-gray-400 text-sm">
+                            <span class="text-[#98971a] font-bold text-md">
                                 <%= chat.sender.username %>
                             </span>
                             <span class="text-xs text-gray-400" id="date">
