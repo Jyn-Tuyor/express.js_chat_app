@@ -2,13 +2,13 @@
 <section class="glass-borders"
     style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/msgbg.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
     <form id="form" class="p-4 message-box h-[90vh] flex flex-col justify-between ">
-        <div class="overflow-y-auto ">
+        <div id="message_box" class="overflow-y-auto ">
             <ul id="messages">
                 <% chats.forEach(chat=> { %>
-                    <li class="my-2">
+                    <li class="my-4">
 
                         <div class="flex flex-col">
-                            <span>
+                            <span class="text-sm">
                                 <%= chat.sender.username%>
                                     <strong class="block">
                                         <%= chat.message %>
@@ -38,6 +38,7 @@
     const form = document.getElementById('form')
     const input = document.getElementById("message-input")
     const messages = document.getElementById("messages")
+    const message_box = document.getElementById("message_box")
 
     const user = "<%= user.username %>"
 
@@ -52,6 +53,8 @@
                 id: parseInt("<%= user.id %>")
             }
         }))
+
+        message_box.scrollTop = message_box.scrollHeight
     }
 
     // receive message from the server
@@ -62,9 +65,9 @@
         if (data.type == 'chat') {
             let username = data.message.split(":")[0]
             const message = data.message.split(":")[1];
-
+            li.classList.add("my-4")
             li.innerHTML = `<div class="flex flex-col gap-1">
-                <span>${user}</span>
+                <span class="text-sm">${username}</span>
                 <strong>${message}</strong>
             </div>`
 
@@ -73,6 +76,7 @@
             li.innerHTML = data.message
             messages.append(li)
         }
+        message_box.scrollTop = message_box.scrollHeight
 
 
     }
@@ -84,6 +88,8 @@
         socket.send(JSON.stringify({ type: 'chat', broadcast: 'public', user, message }))
 
         input.value = ''
+        message_box.scrollTop = message_box.scrollHeight
+
     })
 
 
