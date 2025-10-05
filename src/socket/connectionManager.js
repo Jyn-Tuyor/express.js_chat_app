@@ -27,7 +27,10 @@ class ConnectionManager {
             if (client.readyState === this.WsServer.OPEN) {
                 client.send(JSON.stringify({
                     type: 'chat',
-                    message: `${message.user}: ${message.message}`
+                    data: {
+                        user: message.user,
+                        message: message.message.length >= 48 ? message.message.slice(0, 48): message.message
+                    }
                 }))
             }
         })

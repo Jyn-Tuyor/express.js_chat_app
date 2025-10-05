@@ -42,10 +42,11 @@ const socketInit = (server) => {
 
                 } else if (message.type == 'chat' && message.broadcast == 'public') {
                     connectType = "public"
-                    console.log(message)
+
+
                     await Chat.create({
                         "sender_id": client_ws.user.id,
-                        "message": message.message,
+                        "message": message.message.length >= 48 ? message.message.slice(0, 48): message.message ,
                         "broadcast": 'global',
                         "type": "chat"
                     })
@@ -69,7 +70,8 @@ const socketInit = (server) => {
                             "type": "chat",
                             "broadcast": "private",
                             "from": client_ws.user,
-                            "message": message.message
+                                                       "message": message.message.length >= 48 ? message.message.slice(0, 48): message.message ,
+
                         }))
 
                         console.log("sended")
@@ -77,7 +79,7 @@ const socketInit = (server) => {
                         await Chat.create({
                             "sender_id": client_ws.user.id,
                             "receiver_id": message.receiver,
-                            "message": message.message,
+                            "message": message.message.length >= 48 ? message.message.slice(0, 48): message.message ,
                             "broadcast": 'private',
                             "type": "chat"
                         })
@@ -86,7 +88,7 @@ const socketInit = (server) => {
                         await Chat.create({
                             "sender_id": client_ws.user.id,
                             "receiver_id": message.receiver,
-                            "message": message.message,
+                            "message": message.message.length >= 48 ? message.message.slice(0, 48): message.message ,
                             "broadcast": 'private',
                             "type": "chat"
                         })

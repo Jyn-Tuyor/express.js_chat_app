@@ -27,7 +27,7 @@
         <div id="message-box" class="overflow-y-scroll flex-1">
             <ul id="messages" class="p-2 text-black">
                 <% chats.forEach((chat)=> { %>
-                    <li class="my-4">
+                    <li class="my-4 text-wrap">
                         <div class="flex flex-row justify-between">
                             <span class="text-sm">
                                 <%= chat.sender.username %>
@@ -36,7 +36,7 @@
                                 <%= chat.createdAt %>
                             </span>
                         </div>
-                        <strong>
+                        <strong class="text-wrap">
                             <%= chat.message %>
                         </strong>
                     </li>
@@ -129,7 +129,7 @@
                 <span class="text-sm"><%= user.username %></span>
                 <span class="text-xs" id="date">${new Date()}</span>
             </div>
-            <strong>${message}</strong>
+            <strong class="text-wrap">${message}</strong>
         `
         messages.append(li)
         input.value = ''

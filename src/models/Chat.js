@@ -3,7 +3,7 @@ const { DataTypes } = require("sequelize")
 const User = require("./User")
 
 const Chat = sequelize.define("chat", {
-    message: { type: DataTypes.STRING, allowNull: false },
+    message: { type: DataTypes.STRING(48), allowNull: false },
     broadcast: { type: DataTypes.ENUM('global', 'private')},
     type: { type: DataTypes.ENUM('join', 'left', 'chat')}
 })
