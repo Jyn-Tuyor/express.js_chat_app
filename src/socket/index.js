@@ -9,11 +9,10 @@ let connectType;
 
 const socketInit = (server) => {
     const wss = new WsServer.Server({ server, clientTracking: true })
-    const connectionManager = new ConnectionManager(wss, WsServer);
-    
-
     wss.on("connection", (client_ws) => {
         try {
+            const connectionManager = new ConnectionManager(wss, WsServer, client_ws);
+
             client_ws.isAlive = true;
             client_ws.on('pong', () => {
                 console.log("Received a pong.")
@@ -21,48 +20,23 @@ const socketInit = (server) => {
             })
 
             client_ws.on('message', async (raw) => {
-                const message = JSON.parse(raw.toString())
+                const data = JSON.parse(raw.toString())
 
-                if (message.type == 'join' && message.broadcast == 'public') {
-                    client_ws.user = message.user
-
-                    connectionManager.addClient(client_ws.user.id, client_ws)
-                    connectType = "public"
-
-                    // await Chat.create({
-                    //     "sender_id": client_ws.user.id,
-                    //     "message": `${client_ws.user.username} joined the chat`,
-                    //     "broadcast": 'global',
-                    //     "type": "join"
-                    // })
-
+                if (data.type == 'join' && data.broadcast == 'public') {
+                    // some code here
+                    connectionManager.addClient(data, client_ws)
+                } else if (data.type == 'chat' && data.broadcast == 'public') {
+                    connectionManager.broadcastPublicChat(data);
+                } else if (data.type == 'join' && data.broadcast == 'private') {
                     
-                    // connectionManager.broadcastPublicAlert(message);
-
-
-                } else if (message.type == 'chat' && message.broadcast == 'public') {
-                    connectType = "public"
-
-
-                    await Chat.create({
-                        "sender_id": client_ws.user.id,
-                        "message": message.message.length >= 48 ? message.message.slice(0, 48): message.message ,
-                        "broadcast": 'global',
-                        "type": "chat"
-                    })
-
-                    connectionManager.broadcastPublicChat(message);
-
-                } else if (message.type == 'join' && message.broadcast == 'private') {
-                    
-                    client_ws.user = message.user
+                    client_ws.user = data.user
                     clients.set(client_ws.user.id, client_ws);
                     connectType = "private"
 
 
-                } else if (message.type == 'chat' && message.broadcast == 'private') {
+                } else if (data.type == 'chat' && data.broadcast == 'private') {
                     connectType = "private"
-                    const targetSocket = clients.get(message.receiver);
+                    const targetSocket = clients.get(data.receiver);
 
                     if (targetSocket && targetSocket.readyState == WebSocket.OPEN) {
 
@@ -70,7 +44,7 @@ const socketInit = (server) => {
                             "type": "chat",
                             "broadcast": "private",
                             "from": client_ws.user,
-                                                       "message": message.message.length >= 48 ? message.message.slice(0, 48): message.message ,
+                            "message": data.message.length >= 48 ? data.message.slice(0, 48): data.message ,
 
                         }))
 
@@ -78,8 +52,8 @@ const socketInit = (server) => {
 
                         await Chat.create({
                             "sender_id": client_ws.user.id,
-                            "receiver_id": message.receiver,
-                            "message": message.message.length >= 48 ? message.message.slice(0, 48): message.message ,
+                            "receiver_id": data.receiver,
+                            "message": data.message.length >= 48 ? data.message.slice(0, 48): data.message ,
                             "broadcast": 'private',
                             "type": "chat"
                         })
@@ -87,8 +61,8 @@ const socketInit = (server) => {
                         // console.log("socket id: " + client_ws.user.id)
                         await Chat.create({
                             "sender_id": client_ws.user.id,
-                            "receiver_id": message.receiver,
-                            "message": message.message.length >= 48 ? message.message.slice(0, 48): message.message ,
+                            "receiver_id": data.receiver,
+                            "message": data.message.length >= 48 ? data.message.slice(0, 48): data.message ,
                             "broadcast": 'private',
                             "type": "chat"
                         })
