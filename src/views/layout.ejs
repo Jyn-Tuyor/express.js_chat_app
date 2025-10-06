@@ -120,6 +120,11 @@
         }
 
         .message-box {
+            background: linear-gradient(rgba(255, 255, 255, .2));
+            border-radius: 5px;
+        } 
+
+        .message-input {
             background: linear-gradient(rgba(255, 255, 255, .5));
             border-radius: 5px;
         } 
@@ -134,7 +139,7 @@
             nav here
         </nav>
     </header> -->
-    <div class="p-8 grid grid-cols-4 gap-4 justify-evenly">
+    <div class="p-8 grid grid-cols-4 gap-4 justify-evenly ">
         <% if (user) { %>
 
             <aside class="col-span-1">
@@ -154,7 +159,7 @@
                             <a href="/users/dashboard" class="pl-2">Dashboard</a>
                         </div>
                         <div class="nav-inactive">
-                            <img src="/create_profile.png" class="nav-icons" />
+                            <img src="/user.png" class="nav-icons" />
                             <a href="/users/create-profile" class="pl-2">Create Profile</a>
                         </div>
                         <form action="/logout" method="post" style="margin:6px auto; width:93%;">

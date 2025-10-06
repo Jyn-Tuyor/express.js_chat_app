@@ -31,9 +31,9 @@ const socketInit = (server) => {
 
                 } else if (data.type == 'join' && data.broadcast == 'private') {
                     
-                    client_ws.user = data.user
-                    clients.set(client_ws.user.id, client_ws);
-                    connectType = "private"
+                    // client_ws.user = data.user
+                    // clients.set(client_ws.user.id, client_ws);
+                    // connectType = "private"
 
 
                 } else if (data.type == 'chat' && data.broadcast == 'private') {
