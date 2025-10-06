@@ -13,6 +13,11 @@ class ConnectionManager {
         this.client_ws.user = data.user
 
         this.clients.set(data.user.id, ws);
+        if (data.broadcast == "private") {
+            this.connectionMode = "private"
+        } else {
+            this.connectionMode = "public"
+        }
     }
 
     broadcastPublicAlert(data, client_ws) {
@@ -62,6 +67,43 @@ class ConnectionManager {
         })
     }
 
+    async broadcastPrivateChat(data) {
+        // this.connectionMode = "private"
+        const targetSocket = this.clients.get(data.receiver);
+
+        if (targetSocket && targetSocket.readyState == WebSocket.OPEN) {
+
+            targetSocket.send(JSON.stringify({
+                "type": "chat",
+                "broadcast": "private",
+                "from": this.client_ws.user,
+                "message": data.message.length >= 48 ? data.message.slice(0, 48) : data.message,
+
+            }))
+
+            // console.log("sended")
+
+            await Chat.create({
+                "sender_id": this.client_ws.user.id,
+                "receiver_id": data.receiver,
+                "message": data.message.length >= 48 ? data.message.slice(0, 48) : data.message,
+                "broadcast": 'private',
+                "type": "chat"
+            })
+        } else {
+            // fallback: persist private chat to DB if possible
+            if (this.client_ws.user && this.client_ws.user.id) {
+                await Chat.create({
+                    sender_id: this.client_ws.user.id,
+                    receiver_id: data.receiver,
+                    message: data.message.length >= 48 ? data.message.slice(0, 48) : data.message,
+                    broadcast: 'private',
+                    type: 'chat'
+                });
+            }
+        }
+
+    }
 }
 
 module.exports = ConnectionManager;
