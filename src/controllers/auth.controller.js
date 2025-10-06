@@ -3,63 +3,65 @@ const UserProfile = require("../models/UserProfile")
 const bcrypt = require("bcrypt")
 
 exports.login = async (req, res) => {
-    const { id_number, password } = req.body;
+    try {
 
-    // if (id_number == '' && password == '') return res.status(400).render('index', { error: { type: 'all', message: "All fields required."}})
-    // else if(id_number == '') return res.status(400).render('index', { error: { type: 'id_number', message: "ID field required."}})
-    // else if(password == '') return res.status(400).render('index', { error: { type: 'password', message: "Password field required."}})
-    let errors = []
+        const { id_number, password } = req.body;
 
-    if (!id_number) {
-        errors.push("ID field required.")
-    }
+        let errors = []
 
-    if (!password) {
-        errors.push("Password field required.")
-    }
+        if (!id_number) {
+            errors.push("ID field required.")
+        }
 
-    if (!id_number || !password) {
-        return res.status(400).render("index", { errors })
-    }
+        if (!password) {
+            errors.push("Password field required.")
+        }
 
-    // console.log(User)
-    // return res.redirect('/')
-    const user = await User.findOne({
-        where: { id_number },
-        include: [
-            {
-                model: UserProfile,
-                as: "profile"
-            }
-        ]
-    });
+        if (!id_number || !password) {
+            return res.status(400).render("index", { errors })
 
-    if (!user) {
-        // error: user not found
-        return res.status(400).redirect('/');
-    }
-    const isValid = await bcrypt.compare(password, user.password)
-    if (!isValid) {
-        errors.push("Account not found.")
-        // login failed
-        // return res.status(400).redirect('/');
+        }
+
+        const user = await User.findOne({
+            where: { id_number: id_number },
+            include: [
+                {
+                    model: UserProfile,
+                    as: "profile"
+                }
+            ]
+        });
+
+        if (!user) {
+            errors.push("Account not found.")
+            return res.render('index', { errors })
+        }
+
+        const isValid = await bcrypt.compare(password, user.password)
+
+        if (!isValid) {
+            errors.push("Incorrect password.")
+            return res.render('index', { errors })
+        }
+
+        req.session.user = {
+            id: user.id,
+            id_number: user.id_number,
+            username: user.username,
+            profile: user.profile || null
+        }
+
+
+        res.redirect('/users/dashboard')
+    } catch (err) {
+        errors.push("Something went wrong.")
         return res.render('index', { errors })
+
     }
 
-    req.session.user = {
-        id: user.id,
-        id_number: user.id_number,
-        username: user.username,
-        profile: user.profile || null
-    }
-
-
-    // console.log(user.toJSON())
-
-    res.redirect('/users/dashboard')
 }
 
-exports.register =  async (req, res) => {
+exports.register = async (req, res) => {
     try {
         const { username, id_number, password, password_confirmation } = req.body;
 
@@ -67,31 +69,27 @@ exports.register =  async (req, res) => {
             return res.redirect('/register');
         }
 
-        const isIdNotUnique = await User.findOne({ where: { id: id_number }});
+        const isIdNotUnique = await User.findOne({ where: { id_number: id_number } });
 
         if (!isIdNotUnique) {
             const new_user = await User.create({ username, id_number, password });
         } else {
-            return res.status(201).render('register', { error: "With that ID has already been taken."});
-
+            return res.status(201).render('register', { error: "The ID number has already been taken." });
         }
 
         return res.status(201).redirect('/');
 
     } catch (err) {
-        return res.status(201).render('register', { error: "Something wen't wrong."});
+        return res.status(201).render('register', { error: "Something wen't wrong." });
         // res.status(400).json({ error: err.message });
     }
-   
-
-    return res.redirect('/register');
 }
 
 exports.registerView = (req, res) => {
     res.render("register")
 }
 
-exports.logout =  async(req, res) => {
+exports.logout = async (req, res) => {
     req.session.destroy(() => {
         res.redirect('/')
     })

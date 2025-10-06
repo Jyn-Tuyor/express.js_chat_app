@@ -2,7 +2,8 @@ const UserProfile = require("../models/UserProfile")
 const User = require("../models/User")
 const Chat = require("../models/Chat")
 const { Op } = require("sequelize")
-
+const { Sequelize } = require("sequelize")
+const sequelize = require("../db")
 
 exports.createProfile = async (req, res) => {
     try {
@@ -89,9 +90,11 @@ exports.chatRoom = async (req, res) => {
                 model: User,
                 as: "sender"
             }],
-        limit: 20
+        limit: 20,
+        order: [['createdAt', 'DESC']],
     });
-    // console.log(chats)
+
+    chats.reverse()
 
     res.render("chat_room", { user, chats })
 }
