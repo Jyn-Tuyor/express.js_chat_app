@@ -54,7 +54,7 @@ exports.login = async (req, res) => {
     }
 
 
-    console.log(user.toJSON())
+    // console.log(user.toJSON())
 
     res.redirect('/users/dashboard')
 }
@@ -67,12 +67,20 @@ exports.register =  async (req, res) => {
             return res.redirect('/register');
         }
 
-        const new_user = User.create({ username, id_number, password });
+        const isIdNotUnique = await User.findOne({ where: { id: id_number }});
+
+        if (!isIdNotUnique) {
+            const new_user = await User.create({ username, id_number, password });
+        } else {
+            return res.status(201).render('register', { error: "With that ID has already been taken."});
+
+        }
 
         return res.status(201).redirect('/');
 
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        return res.status(201).render('register', { error: "Something wen't wrong."});
+        // res.status(400).json({ error: err.message });
     }
    
 
