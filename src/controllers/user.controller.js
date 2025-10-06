@@ -84,7 +84,7 @@ exports.chatRoom = async (req, res) => {
             model: User,
             as: "sender" 
         }],
-        limit: 30 
+        limit: 20 
     });
     // console.log(chats)
 

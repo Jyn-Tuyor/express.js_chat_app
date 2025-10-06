@@ -4,7 +4,6 @@ const Chat = require("../models/Chat")
 const ConnectionManager = require("./connectionManager")
 
 
-const clients = new Map();
 let connectType;
 
 const socketInit = (server) => {
@@ -23,10 +22,13 @@ const socketInit = (server) => {
                 const data = JSON.parse(raw.toString())
 
                 if (data.type == 'join' && data.broadcast == 'public') {
-                    // some code here
+                    
                     connectionManager.addClient(data, client_ws)
+
                 } else if (data.type == 'chat' && data.broadcast == 'public') {
+
                     connectionManager.broadcastPublicChat(data);
+
                 } else if (data.type == 'join' && data.broadcast == 'private') {
                     
                     client_ws.user = data.user
