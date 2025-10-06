@@ -1,11 +1,10 @@
-<section class="dashboard  h-[100vh] flex justify-center py-4 px-2 ">
-
+<section class="flex justify-center py-4 px-2 glass-borders">
     <div
-        class="p-4 rounded-sm border border-gray-400 bg-white  w-[380px] flex flex-col gap-4  border-r-2 border-b-4 border-gray-800">
+        class="styled-container aero-borders flex-1">
 
-        <h1 align="center">My Profile</h1>
+        <h1>My Profile</h1>
 
-        <div>
+        <div class="text-white styled-container aero-borders my-2">
             <p>Username: <%= user.username %>
             </p>
             <p>ID: <%= user.id_number %>
@@ -13,29 +12,28 @@
 
 
             <div
-                class="p-4 capitalize rounded-sm border border-gray-400 bg-white   flex flex-col gap-4  border-r-2 border-b-4 border-gray-800">
-                <p>Year Level: <%= user.profile.year_level %>
+                class="styled-container aero-borders">
+                <p>Year Level: <%= user.profile ? user.profile.year_level : ''   %>
                 </p>
-                <p>Gender: <%= user.profile.gender %>
+                <p>Gender: <%= user.profile ? user.profile.gender : ''   %>
                 </p>
-                <p>Hobbies: <%= user.profile.hobby_1 %> & <%= user.profile.hobby_2 %>
+                <p>Hobbies: <%= user.profile ? user.profile.hobby_1 : ''   %>, <%= user.profile ? user.profile.hobby_2 : ''   %>
                 </p>
-                <p class="lowercase ">Not so good at: <%= user.profile.not_good %>
+                <p class="lowercase ">Not so good at: <%= user.profile ? user.profile.not_good : ''   %>
                 </p>
 
                 <p class="block font-bold">Bio</p>
-                <div class="border rounded-sm p-2">
+                <div class="glass-borders">
                     <p class="">
-                        <%= user.profile.bio %>
+                        <%= user.profile ? user.profile.bio : ''   %>
                     </p>
                 </div>
             </div>
-
         </div>
         <div class="flex flex-row gap-2">
             <a href="/users/my-profile/edit"
-                class="flex-1 bg-slate-800 hover:bg-slate-900 font-bold text-white p-2 shadow-sm cursor-pointer">Edit</a>
-            <a class="flex-1 bg-slate-800 hover:bg-slate-900 font-bold text-white p-2 shadow-sm cursor-pointer"
+                class="styled-button">Edit</a>
+            <a class="styled-button"
                 href="/">Go back</a>
         </div>
 

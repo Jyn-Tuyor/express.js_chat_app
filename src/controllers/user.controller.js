@@ -31,8 +31,8 @@ exports.createProfileView = (req, res) => {
 }
 
 exports.myProfile = (req, res) => {
-    const user = req.session.user;
-    res.render("view_profile", { user });
+    // const user = req.session.user;
+    res.render("view_profile");
 }
 
 exports.editProfile = (req, res) => {
