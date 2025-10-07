@@ -5,21 +5,21 @@
         <h1>My Profile</h1>
 
         <div class="text-white styled-container aero-borders my-2">
-            <p>Username: <%= user.username %>
+            <p><strong>Username:</strong> <%= user.username %>
             </p>
-            <p>ID: <%= user.id_number %>
+            <p><strong>ID:</strong> <%= user.id_number %>
             </p>
 
 
             <div
                 class="styled-container aero-borders">
-                <p>Year Level: <%= user.profile ? user.profile.year_level : ''   %>
+                <p><strong>Year Level:</strong> <%= user.profile ? user.profile.year_level : ''   %>
                 </p>
-                <p>Gender: <%= user.profile ? user.profile.gender : ''   %>
+                <p><strong>Gender:</strong> <%= user.profile ? user.profile.gender : ''   %>
                 </p>
-                <p>Hobbies: <%= user.profile ? user.profile.hobby_1 : ''   %>, <%= user.profile ? user.profile.hobby_2 : ''   %>
+                <p><strong>Hobbies:</strong> <%= user.profile ? user.profile.hobby_1 : ''   %>, <%= user.profile ? user.profile.hobby_2 : ''   %>
                 </p>
-                <p class="lowercase ">Not so good at: <%= user.profile ? user.profile.not_good : ''   %>
+                <p ><strong>Not so good at:</strong> <%= user.profile ? user.profile.not_good : ''   %>
                 </p>
 
                 <p class="block font-bold">Bio</p>
