@@ -4,10 +4,10 @@ const ConnectionManager = require("./connectionManager");
 
 const socketInit = (server) => {
     const wss = new WsServer.Server({ server, clientTracking: true });
+    const connectionManager = new ConnectionManager(wss, WsServer);
 
     wss.on("connection", (client_ws) => {
         try {
-            const connectionManager = new ConnectionManager(wss, WsServer, client_ws);
 
             client_ws.isAlive = true;
             client_ws.on('pong', () => {
@@ -22,11 +22,11 @@ const socketInit = (server) => {
                     if (data.type == 'join' && data.broadcast == 'public') {
                         connectionManager.addClient(data, client_ws);
                     } else if (data.type == 'chat' && data.broadcast == 'public') {
-                        connectionManager.broadcastPublicChat(data);
+                        connectionManager.broadcastPublicChat(data), client_ws;
                     } else if (data.type == 'join' && data.broadcast == 'private'){
                         connectionManager.addClient(data, client_ws)
                     } else if (data.type == 'chat' && data.broadcast == 'private') {
-                        connectionManager.broadcastPrivateChat(data);
+                        connectionManager.broadcastPrivateChat(data, client_ws);
                     }
                 } catch (err) {
                     console.log('Error handling message:', err);

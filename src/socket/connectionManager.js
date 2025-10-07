@@ -1,18 +1,19 @@
 const Chat = require('../models/Chat')
 
 class ConnectionManager {
-    constructor(wss, WsServer, client_ws) {
+    constructor(wss, WsServer) {
         this.clients = new Map();
         this.WsServer = WsServer
         this.wss = wss;
         this.connectionMode;
-        this.client_ws = client_ws;
+        // this.client_ws = client_ws;
     }
 
-    addClient(data, ws) {
-        this.client_ws.user = data.user
+    addClient(data, client_ws) {
+        client_ws.user = data.user
+        console.log("user: ", data.user)
 
-        this.clients.set(data.user.id, ws);
+        this.clients.set(data.user.id, client_ws);
         if (data.broadcast == "private") {
             this.connectionMode = "private"
         } else {
@@ -44,11 +45,11 @@ class ConnectionManager {
 
     }
 
-    async broadcastPublicChat(data) {
+    async broadcastPublicChat(data, client_ws) {
         this.connectionMode = "public"
 
         await Chat.create({
-            "sender_id": this.client_ws.user.id,
+            "sender_id": client_ws.user.id,
             "message": data.message.length >= 48 ? data.message.slice(0, 48) : data.message,
             "broadcast": 'global',
             "type": "chat"
@@ -67,16 +68,17 @@ class ConnectionManager {
         })
     }
 
-    async broadcastPrivateChat(data) {
+    async broadcastPrivateChat(data, client_ws) {
         // this.connectionMode = "private"
         const targetSocket = this.clients.get(data.receiver);
-
+        console.log("receiver: ", data.receiver)
+        console.log("target: ", targetSocket)
         if (targetSocket && targetSocket.readyState == WebSocket.OPEN) {
-
+            console.log("receiver: ", data.receiver)
             targetSocket.send(JSON.stringify({
                 "type": "chat",
                 "broadcast": "private",
-                "from": this.client_ws.user,
+                "from": client_ws.user,
                 "message": data.message.length >= 48 ? data.message.slice(0, 48) : data.message,
 
             }))
@@ -84,7 +86,7 @@ class ConnectionManager {
             // console.log("sended")
 
             await Chat.create({
-                "sender_id": this.client_ws.user.id,
+                "sender_id": client_ws.user.id,
                 "receiver_id": data.receiver,
                 "message": data.message.length >= 48 ? data.message.slice(0, 48) : data.message,
                 "broadcast": 'private',
@@ -92,9 +94,9 @@ class ConnectionManager {
             })
         } else {
             // fallback: persist private chat to DB if possible
-            if (this.client_ws.user && this.client_ws.user.id) {
+            if (client_ws.user && client_ws.user.id) {
                 await Chat.create({
-                    sender_id: this.client_ws.user.id,
+                    sender_id: client_ws.user.id,
                     receiver_id: data.receiver,
                     message: data.message.length >= 48 ? data.message.slice(0, 48) : data.message,
                     broadcast: 'private',
