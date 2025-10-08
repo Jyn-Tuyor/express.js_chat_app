@@ -2,7 +2,6 @@ const express = require("express")
 const router = express.Router();
 const userController = require("../controllers/user.controller")
 
-router.get("/create-profile", userController.createProfileView)
 router.post('/profile/store', userController.createProfile)
 router.get("/my-profile", userController.myProfile)
 router.get("/my-profile/edit", userController.editProfile)

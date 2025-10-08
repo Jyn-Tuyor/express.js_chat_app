@@ -19,16 +19,12 @@ exports.createProfile = async (req, res) => {
             "user_id": user_id
         })
 
-        return res.status(201).redirect('/users/create-profile');
+        return res.status(201).redirect('/users/my-profile');
 
     } catch (err) {
-        res.status(500).render('create_profile', { errors: ["Something went wrong"] })
+        // TODO: give some errors lol
+        return res.status(201).redirect('/users/my-profile');
     }
-}
-
-exports.createProfileView = (req, res) => {
-    const user_id = req.session.user.id
-    res.render("create_profile", { user_id })
 }
 
 exports.myProfile = (req, res) => {
