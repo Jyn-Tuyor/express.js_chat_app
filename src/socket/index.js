@@ -11,7 +11,7 @@ const socketInit = (server) => {
 
             client_ws.isAlive = true;
             client_ws.on('pong', () => {
-                // mark client as alive when we receive a pong
+                // client is alive when it receives a pong
                 client_ws.isAlive = true;
             });
 
@@ -39,7 +39,6 @@ const socketInit = (server) => {
 
             client_ws.on('close', async (code, reason) => {
                 console.log(`A client disconnected, Code - ${code}, Reason - ${reason}`);
-                // nothing else to do here; wss will remove the client automatically
             });
 
         } catch (err) {

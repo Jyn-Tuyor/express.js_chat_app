@@ -23,12 +23,12 @@ dotenv.config()
 const PORT = 7878;
 const app = express();
 
-// sequelize.drop().then(() => {
-//     console.log("db dropped")
-// })
+sequelize.drop().then(() => {
+    console.log("db dropped")
+})
 
-sequelize.sync()
-    .then(() => console.log("Connected to db"))
+// sequelize.sync()
+//     .then(() => console.log("Connected to db"))
 
 
 // set view engine
@@ -108,7 +108,6 @@ app.use("/users", protectedRoutes);
 
 app.get("/", (req, res) => {
     // check if authed
-
     if (req.session.user) {
         console.log(req.session.user.profile)
         return res.redirect('/users/dashboard');
