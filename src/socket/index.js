@@ -22,7 +22,7 @@ const socketInit = (server) => {
                     if (data.type == 'join' && data.broadcast == 'public') {
                         connectionManager.addClient(data, client_ws);
                     } else if (data.type == 'chat' && data.broadcast == 'public') {
-                        connectionManager.broadcastPublicChat(data), client_ws;
+                        connectionManager.broadcastPublicChat(data, client_ws) ;
                     } else if (data.type == 'join' && data.broadcast == 'private'){
                         connectionManager.addClient(data, client_ws)
                     } else if (data.type == 'chat' && data.broadcast == 'private') {
