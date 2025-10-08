@@ -5,28 +5,6 @@ const { Op } = require("sequelize")
 const { Sequelize } = require("sequelize")
 const sequelize = require("../db")
 
-exports.createProfile = async (req, res) => {
-    try {
-        const { year_level, gender, hobby_1, hobby_2, not_good, bio } = req.body;
-        const user_id = req.session.user.id;
-        const profile = await UserProfile.create({
-            "year_level": year_level,
-            "gender": gender,
-            "hobby_1": hobby_1,
-            "hobby_2": hobby_2,
-            "not_good": not_good,
-            "bio": bio,
-            "user_id": user_id
-        })
-
-        return res.status(201).redirect('/users/my-profile');
-
-    } catch (err) {
-        // TODO: give some errors lol
-        return res.status(201).redirect('/users/my-profile');
-    }
-}
-
 exports.myProfile = (req, res) => {
     // const user = req.session.user;
     res.render("view_profile");
@@ -43,6 +21,7 @@ exports.updateProfile = async (req, res) => {
         const { year_level, bio, gender, hobby_1, hobby_2, not_good } = req.body;
 
         const user = await User.findOne({ where: { id: req.session.user.id }, include: [{ model: UserProfile, as: "profile" }] })
+        const user_id = user.id;
 
         if (user.profile) {
             user.profile.year_level = year_level
@@ -55,12 +34,20 @@ exports.updateProfile = async (req, res) => {
             await user.save()
             await user.profile.save()
         } else {
-            return this.createProfile(req, res);
+            await UserProfile.create({
+                "year_level": year_level,
+                "gender": gender,
+                "hobby_1": hobby_1,
+                "hobby_2": hobby_2,
+                "not_good": not_good,
+                "bio": bio,
+                "user_id": user_id
+            })
         }
 
 
         req.session.user = {
-            id: user.id,
+            id: user_id,
             id_number: user.id_number,
             username: user.username,
             profile: user.profile || null
