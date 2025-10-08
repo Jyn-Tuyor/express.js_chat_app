@@ -113,7 +113,9 @@
             align-items: center;
             margin: auto auto 2.5px auto;
             width: 93%;
-            font-size: 13px;
+            /* font-size: 13px; */
+            padding: 2px;
+            cursor: pointer;
         }
 
         .navbar-titles {
@@ -129,13 +131,13 @@
         }
 
         .nav-icons {
-            height: 18px;
-            margin: 1px 2px 0px 3px;
+            height: 22px;
             z-index: 1;
+            
         }
 
         .message-box {
-            background: linear-gradient(rgba(255, 255, 255, .3));
+            background: linear-gradient(rgba(255, 255, 255, .01));
             border-radius: 5px;
         }
 
@@ -155,32 +157,28 @@
     </header> -->
     <div class="p-8 grid grid-cols-4 gap-4 justify-evenly ">
         <% if (user) { %>
-
             <aside class="col-span-1">
-                <div>
+                <div class="styled-container aero-borders">
                     <nav class="nav-categories">
                         <span class="navbar-titles">Application Links</span>
-                        <div class="nav-inactive">
+                        <div class="glass-borders nav-inactive">
                             <img src="/chat_room.png" class="nav-icons" />
-                            <a href="/users/chat-room" class="pl-2">Chat Room</a>
+                            <a href="/users/chat-room" class="pl-2 text-lg hover:underline">Chat Room</a>
                         </div>
-                        <div class="nav-inactive">
+                        <div class="glass-borders nav-inactive">
                             <img src="/user.png" class="nav-icons" />
-                            <a href="/users/my-profile" class="pl-2">My Profile</a>
+                            <a href="/users/my-profile" class="pl-2 text-lg hover:underline">My Profile</a>
                         </div>
-                        <div class="nav-inactive">
+                        <div class="glass-borders nav-inactive">
                             <img src="/dashboard.png" class="nav-icons" />
-                            <a href="/users/dashboard" class="pl-2">Dashboard</a>
+                            <a href="/users/dashboard" class="pl-2 text-lg hover:underline">Dashboard</a>
                         </div>
                         <!-- <div class="nav-inactive">
                             <img src="/user.png" class="nav-icons" />
                             <a href="/users/create-profile" class="pl-2">Create Profile</a>
                         </div> -->
                         <form action="/logout" method="post" style="margin:6px auto; width:93%;">
-                            <button type="submit" class="nav-inactive"
-                                style="cursor: pointer; width:100%; background:transparent; border:none; text-align:left; padding:6px 8px;">
-                                <span class="navbar-titles">Logout</span>
-                            </button>
+                            <button type="submit" class="styled-button">Logout</button>
                         </form>
                     </nav>
                 </div>

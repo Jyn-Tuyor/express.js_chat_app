@@ -114,7 +114,12 @@ exports.privateChat = async (req, res) => {
     // }); 
     const receiver_id = req.params.id;
     const sender_id = req.session.user.id;
-    const chat_with = await User.findOne({ where: { id: receiver_id } })
+    const chat_with = await User.findOne({ where: { id: receiver_id }, include: [
+        {
+            model: UserProfile,
+            as: "profile"
+        }
+    ] })
     const user = await User.findOne({ where: { id: sender_id } })
     const chats = await Chat.findAll({
         where: {
@@ -124,10 +129,10 @@ exports.privateChat = async (req, res) => {
             ]
         }, include: [
             {
-                model: User, as: "sender"
+                model: User, as: "sender",
             },
             {
-                model: User, as: "receiver"
+                model: User, as: "receiver",
             }
         ],
         order: [['createdAt', 'DESC']],

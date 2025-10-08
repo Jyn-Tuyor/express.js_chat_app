@@ -1,20 +1,45 @@
-<section class="h-[100vh] glass-borders flex justify-between  gap-2" 
+<section class="h-[80vh] glass-borders flex justify-between  gap-2"
     style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/msgbg.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
 
     <div class="h-full flex flex-col w-[300px] styled-container aero-borders border border-gray-200">
 
-        <h1>
-            <span class="text-gray-50 font-bold block">
+        <h1 class="flex flex-col">
+            <span class="text-gray-50 font-bold ">
                 <%= chat_with.username %>
             </span>
-            <span class="text-gray-400 text-xs block">
+            <span class="text-gray-400 text-xs ">
+                <strong>Joined: </strong>
                 <%= chat_with.createdAt %>
             </span>
         </h1>
 
 
-        <div class="aero-borders rounded-sm p-2 mt-2">
+        <div class="styled-container aero-borders rounded-sm p-2 mt-2">
             <span class="text-gray-400 text-sm">ID: <%= chat_with.id_number %> </span>
+
+            <div class="styled-container aero-borders text-gray-50">
+                <p><strong>Year Level:</strong>
+                    <%= chat_with.profile ? chat_with.profile.year_level : '' %>
+                </p>
+                <p><strong>Gender:</strong>
+                    <%= chat_with.profile ? chat_with.profile.gender : '' %>
+                </p>
+                <p><strong>Hobbies:</strong>
+                    <%= chat_with.profile ? chat_with.profile.hobby_1 : '' %>, <%= chat_with.profile ? chat_with.profile.hobby_2 : '' %>
+                </p>
+                <p><strong>Not so good at:</strong>
+                    <%= chat_with.profile ? chat_with.profile.not_good : '' %>
+                </p>
+
+                <p class="block font-bold">Bio</p>
+                <div class="glass-borders">
+                    <p class="">
+                        <%= chat_with.profile ? chat_with.profile.bio : '' %>
+                    </p>
+                </div>
+            </div>
+
+
         </div>
 
     </div>
