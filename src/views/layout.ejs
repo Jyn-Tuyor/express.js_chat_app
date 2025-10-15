@@ -11,8 +11,11 @@
     <style>
         body {
             background-image: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url('/lain_wall.jpg');
+            min-height: 100vh;
             /* font-family: Windows Regular, sans-serif; */
             background-size: cover;
+            background-repeat: no-repeat;
+            background-color: #0f0f0f;
             font-family: "Segoe UI Semilight", Tahoma, Geneva, Verdana, sans-serif, Arial, Helvetica, sans-serif;
         }
 
@@ -137,8 +140,9 @@
         }
 
         .message-box {
-            background: linear-gradient(rgba(255, 255, 255, .09));
+            background: linear-gradient(rgba(255, 255, 255, .06));
             border-radius: 5px;
+            padding: 2em;
         }
 
         .message-input {
@@ -171,7 +175,7 @@
                         </div>
                         <div class="glass-borders nav-inactive">
                             <img src="/dashboard.png" class="nav-icons" />
-                            <a href="/users/dashboard" class="pl-2 text-lg hover:underline">Dashboard</a>
+                            <a href="/users/dashboard" class="pl-2 text-lg hover:underline">Main</a>
                         </div>
                         <!-- <div class="nav-inactive">
                             <img src="/user.png" class="nav-icons" />

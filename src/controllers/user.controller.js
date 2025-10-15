@@ -79,7 +79,7 @@ exports.chatRoom = async (req, res) => {
 
     chats.reverse()
 
-    res.render("chat_room", { user, chats })
+    res.render("chat/chat_room", { user, chats })
 }
 
 exports.privateChat = async (req, res) => {
@@ -124,5 +124,5 @@ exports.privateChat = async (req, res) => {
 
     chats.reverse()
 
-    return res.render("private_chat", { user, chat_with, chats });
+    return res.render("chat/private_chat", { user, chat_with, chats });
 }
