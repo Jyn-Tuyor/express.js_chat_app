@@ -2,13 +2,11 @@
     <div class="w-100 flex-1 glass-borders">
 
 
-
         <div class="styled-container aero-borders">
             <div>
                 <h1 class="">Welcome back, <%= user.username %>!</h1>
             </div>
 
-          
             <!-- <div>
                 <span class="text-blue-600 underline"><i>App links</i></span>
 
@@ -46,11 +44,12 @@
         <div class="styled-container aero-borders mt-4  rounded-sm shadow-md border-b-4 border-r-4 flex-1  p-2 overflow-y-auto">
 
             <div>
+                <small class="text-gray-200 my-2">Search a person with their ID and have a chat with them!</small>
                 <form>
-                    <input type="text" name="user_id" placeholder="Search by ID"
-                        class="text-gray-800 text-sm bg-gray-100 rounded-sm p-2 outline-none w-full mb-2">
+                    <input type="text" name="user_id" placeholder="Search by ID number"
+                        class="text-gray-800 text-sm bg-gray-100 rounded-sm p-2 outline-none w-full mb-2 focus:ring-2 focus:ring-blue-400 duration-100">
 
-                    <button class="styled-button">Search</button>
+                    <button class="styled-button cursor-pointer">Search</button>
                 </form>
             </div>
 
