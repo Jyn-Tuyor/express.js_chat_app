@@ -18,8 +18,8 @@
             nav here
         </nav>
     </header> -->
-    <div class="p-8 grid grid-cols-4 gap-4 justify-evenly ">
         <% if (user) { %>
+    <div class="p-8 grid grid-cols-4 gap-4 justify-evenly ">
             <aside class="col-span-1">
                 <div class="styled-container aero-borders">
                     <nav class="nav-categories">
@@ -46,13 +46,17 @@
                     </nav>
                 </div>
             </aside>
-            <% } %>
 
                 <main class="col-span-3">
                     <%- body %>
                 </main>
     </div>
+            <% } else {%>
+                <main class="flex justify-center items-center p-12">
+                    <%- body %>
+                </main>
 
+                <% } %>
 </body>
 
 </html>

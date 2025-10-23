@@ -1,33 +1,29 @@
-<div class="glass-borders ">
+<div>
     <form action="/register" method="POST" class="styled-container aero-borders">
-        <div class="">
-            <!-- Card header -->
-            <div class="bg-slate-800  px-4 py-8 flex flex-col justify-center items-center">
-                <img src="/ustp.png" width="100" alt="">
-            </div>
-
+        <div class="w-full">
             <!-- End Header -->
 
             <div class="flex flex-col gap-2 p-3">
-                <div>
-                    <label for="" class="block text-white">Username</label>
-                    <input class="bg-white p-2 w-full outline-none" type="text" placeholder="Username" name="username">
+                <div class="px-4  ">
+                    <label for="" class="block text-white">ユーザー名<span class="text-xs font-light"><i>(username)</i></label>
+                    <input type="text" placeholder="ユーザー名 (username)" name="id_number"
+                        class="text-gray-700 rounded-md  w-full p-2 border-1 border-gray-500 bg-white outline-none focus:ring focus:ring-blue-500 duration-100">
                 </div>
 
-                <div>
+                <div class="px-4">
                     <label for="" class="block text-white ">ID</label>
-                    <input class="bg-white p-2 w-full outline-none" type="text" placeholder="ID" name="id_number">
+                    <input class="bg-white p-2 rounded-md w-full outline-none" type="text" placeholder="ID" name="id_number">
                 </div>
 
-                <div>
-                    <label for="" class="block text-white">Password</label>
-                    <input class="bg-white p-2 w-full outline-none" type="password" placeholder="Password"
+                <div class="px-4">
+                    <label for="" class="block text-white">パスワード<span class="text-xs font-light"><i>(password)</i></label>
+                    <input class="bg-white p-2 rounded-md w-full outline-none" type="password" placeholder="パスワード"
                         name="password">
                 </div>
 
-                <div>
-                    <label for="" class="block text-white">Confirm Password</label>
-                    <input class="bg-white p-2 w-full outline-none" type="password" placeholder="Confirm Password"
+                <div class="px-4">
+                    <label for="" class="block text-white">パスワードの確認 <span class="text-xs font-light"><i>(password confirmation)</i></label>
+                    <input class="bg-white p-2 rounded-md w-full outline-none" type="password" placeholder="パスワードの確認"
                         name="password_confirmation">
                 </div>
 
@@ -35,16 +31,16 @@
                 <!-- <a href="">Don't have an account yet? </a> -->
                 <div class="flex flex-row gap-2">
                     <button type="submit" class="styled-button">
-                        Account</button>
+                        Register</button>
                     <a class="styled-button" href="/">Discard & Go back</a>
                 </div>
 
 
                 <% if (typeof error !="undefined" ) { %>
                     <ul class="text-red-500 bg-red-100 rounded-sm p-2 text-sm border">
-                            <li>
-                                <%= error %>
-                            </li>
+                        <li>
+                            <%= error %>
+                        </li>
                     </ul>
 
                     <% } %>
