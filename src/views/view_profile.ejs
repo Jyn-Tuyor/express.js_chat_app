@@ -10,7 +10,7 @@
             <p><strong>ID:</strong> <%= user.id_number %>
             </p>
 
-
+            <span><%= user.profile.gender %></span>
             <div
                 class="styled-container aero-borders">
                 <p><strong>Year Level:</strong> <%= user.profile ? user.profile.year_level : ''   %>
@@ -21,7 +21,6 @@
                 </p>
                 <p ><strong>Not so good at:</strong> <%= user.profile ? user.profile.not_good : ''   %>
                 </p>
-
                 <p class="block font-bold">Bio</p>
                 <div class="glass-borders">
                     <p class="">

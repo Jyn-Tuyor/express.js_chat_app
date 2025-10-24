@@ -22,14 +22,11 @@ exports.updateProfile = async (req, res) => {
     try {
         const { year_level, bio, gender, hobby_1, hobby_2, not_good } = req.body;
 
-        const user = await prisma.user.findUnique({
+        let user = await prisma.user.findUnique({
             where:
             {
                 id: req.session.user.id
             },
-            include: {
-                profile: true
-            }
         })
         const user_id = user.id;
 
@@ -53,13 +50,17 @@ exports.updateProfile = async (req, res) => {
                 user: { connect: { id: user.id } }
             }
         })
+        let new_user = await prisma.user.findUnique({
+            where:
+            {
+                id: req.session.user.id
+            },
+            include: {
+                profile: true
+            }
+        })
 
-        req.session.user = {
-            id: user_id,
-            id_number: user.id_number,
-            username: user.username,
-            profile: user.profile || null
-        }
+        req.session.user = new_user
 
         res.redirect('/users/my-profile')
 

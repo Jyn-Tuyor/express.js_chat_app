@@ -50,9 +50,9 @@ app.use(session({
     saveUninitialized: false
 }))
 
-
+// Make user available in all EJS
 app.use((req, res, next) => {
-    res.locals.user = req.session ? req.session.user : null;
+    res.locals.user = req.session.user ? req.session.user : null;
     next();
 });
 
@@ -62,7 +62,6 @@ const server = http.createServer(app)
 
 // Socket logics are in here
 socketInit(server)
-
 
 // routes
 app.use('/', require('./routes/authRoutes'));

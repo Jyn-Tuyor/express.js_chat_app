@@ -49,13 +49,7 @@ exports.login = async (req, res) => {
             return res.render('index', { errors })
         }
 
-        req.session.user = {
-            id: user.id,
-            id_number: user.id_number,
-            username: user.username,
-            profile: user.profile || null
-        }
-
+        req.session.user = user
 
         res.redirect('/users/dashboard')
     } catch (err) {
@@ -111,4 +105,3 @@ exports.logout = async (req, res) => {
         res.redirect('/')
     })
 }
-
