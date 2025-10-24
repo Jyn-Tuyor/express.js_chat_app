@@ -3,11 +3,11 @@ const expressLayouts = require("express-ejs-layouts")
 const http = require("http")
 const path = require('path')
 const session = require("express-session")
-const { Op } = require("sequelize")
-const sequelize = require("./db")
 const auth = require("./middleware/auth")
 const socketInit = require("./socket")
 
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 
 // Initialize tables
 const User = require("./models/User")
@@ -22,13 +22,6 @@ dotenv.config()
 
 const PORT = 7878;
 const app = express();
-
-// sequelize.drop().then(() => {
-//     console.log("db dropped")
-// })
-
-sequelize.sync()
-    .then(() => console.log("Connected to db"))
 
 
 // set view engine
@@ -64,42 +57,33 @@ const server = http.createServer(app)
 socketInit(server)
 
 // routes
-app.use('/', require('./routes/authRoutes'));
+app.use('/', require('./routes/auth.routes'));
 
 // protected route
 const protectedRoutes = express.Router();
 protectedRoutes.use(auth);
 
 
-protectedRoutes.use("/", require("./routes/userRoutes"))
+protectedRoutes.use("/", require("./routes/user.routes"))
 
 protectedRoutes.get("/dashboard", async(req, res) => {
+
+    // search for user
     const user_id = req.query.user_id
 
-    const user = await User.findOne({
-        where: { id: req.session.user.id },
-        include: [
-        {
-            model: UserProfile,
-            as: "profile" 
-        }
-    ]})
-
-    console.log("user profile:", user.profile)
     if (user_id) {
-        
-        const fetched_users = await User.findAll({ 
+        const fetched_users = await prisma.user.findMany({ 
             where: {
                 id_number: {
-                    [Op.like]: `%${user_id}%`
+                    contains: user_id,
+                    // mode: 'insensitive'
                 }
             } 
         })
-        // console.log(fetched_users);
-        return res.render("dashboard", { user, fetched_users })
+        return res.render("dashboard", { fetched_users })
     }
 
-    return res.render("dashboard", { user })
+    return res.render("dashboard")
 })
 
 // mounting the protected routes
