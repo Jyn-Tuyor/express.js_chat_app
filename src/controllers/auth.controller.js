@@ -1,5 +1,3 @@
-const User = require('../models/User')
-const UserProfile = require("../models/UserProfile")
 const bcrypt = require("bcrypt")
 const { PrismaClient } = require("@prisma/client")
 const prisma = new PrismaClient()
@@ -85,9 +83,11 @@ exports.register = async (req, res) => {
             }});
 
         if (!isIdNotUnique) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+
             // const new_user = await User.create({ username, id_number, password });
             await prisma.user.create({ data: {
-                username, id_number, password
+                username, id_number, password: hashedPassword
             } });
         } else {
             return res.status(201).render('register', { error: "The ID number has already been taken." });
