@@ -9,15 +9,8 @@ const socketInit = require("./socket")
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-// Initialize tables
-const User = require("./models/User")
-require("./models/UserProfile")
-require("./models/Chat")
-
-
 // sequelize.sync({ force: false });
 const dotenv = require("dotenv")
-const UserProfile = require("./models/UserProfile")
 dotenv.config()
 
 const PORT = 7878;
@@ -67,7 +60,6 @@ protectedRoutes.use(auth);
 protectedRoutes.use("/", require("./routes/user.routes"))
 
 protectedRoutes.get("/dashboard", async(req, res) => {
-
     // search for user
     const user_id = req.query.user_id
 
@@ -88,7 +80,6 @@ protectedRoutes.get("/dashboard", async(req, res) => {
 
 // mounting the protected routes
 app.use("/users", protectedRoutes);
-
 app.get("/", (req, res) => {
     // check if authed
     if (req.session.user) {

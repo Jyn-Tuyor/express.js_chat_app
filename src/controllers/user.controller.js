@@ -1,8 +1,3 @@
-const UserProfile = require("../models/UserProfile")
-const User = require("../models/User")
-const Chat = require("../models/Chat")
-const { Op } = require("sequelize")
-const { Sequelize } = require("sequelize")
 const { PrismaClient } = require("@prisma/client")
 const prisma = new PrismaClient();
 const sequelize = require("../db")
@@ -71,66 +66,50 @@ exports.updateProfile = async (req, res) => {
 }
 
 exports.chatRoom = async (req, res) => {
-    const user = req.session.user;
-
-    const chats = await Chat.findAll({
+    const chats = await prisma.chat.findMany({
         where: {
-            broadcast: 'global'
+            broadcast: 'Public'
         },
-        include: [
+        include: 
             {
-                model: User,
-                as: "sender"
-            }],
-        limit: 20,
-        order: [['createdAt', 'DESC']],
+                sender: true
+            },
+        take: 20,
+        orderBy: {
+            createdAt: 'desc'
+        }
     });
 
-    chats.reverse()
+    // chats.reverse()
 
-    res.render("chat/chat_room", { user, chats })
+    res.render("chat/chat_room", { chats })
 }
 
 exports.privateChat = async (req, res) => {
-    // const chat_with = await User.findOne({ where: { id: req.params.id }, include: [{ model: Chat, as: "receivedMessages"}] }) 
-    // const user = await User.findOne({ 
-    //     where: { id: req.session.user.id },
-    //     include: [
-    //         { 
-    //             model: Chat,
-    //             as: "sentMessages",
-    //             where: { receiver_id: req.params.id },
-    //             required: false
-    //         }
-    //     ]
-    // }); 
     const receiver_id = req.params.id;
     const sender_id = req.session.user.id;
-    const chat_with = await User.findOne({
-        where: { id: receiver_id }, include: [
-            {
-                model: UserProfile,
-                as: "profile"
-            }
-        ]
+    const chat_with = await prisma.user.findUnique({
+        where: { id: receiver_id }, 
+        include: {
+            profile: true
+        }
     })
-    const user = await User.findOne({ where: { id: sender_id } })
-    const chats = await Chat.findAll({
+    const user = await prisma.user.findUnique({ where: { id: sender_id } })
+    const chats = await prisma.chat.findMany({
         where: {
-            [Op.or]: [
-                { receiver_id: receiver_id, sender_id: sender_id },
-                { receiver_id: sender_id, sender_id: receiver_id },
+            OR: [
+                { receiverId: receiver_id, senderId: sender_id },
+                { receiverId: sender_id, senderId: receiver_id },
             ]
-        }, include: [
-            {
-                model: User, as: "sender",
-            },
-            {
-                model: User, as: "receiver",
-            }
-        ],
-        order: [['createdAt', 'DESC']],
-        limit: 10
+        }, 
+        include: {
+            sender: true,
+            receiver: true 
+        },
+        orderBy: {
+            createdAt: 'desc'
+        },
+        take: 10
     })
 
     chats.reverse()
