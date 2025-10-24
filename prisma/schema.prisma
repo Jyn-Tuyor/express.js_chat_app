@@ -18,7 +18,7 @@ model User {
   id_number String @unique
   username String
   password String
-  profile UserProfile?
+  profile Profile?
 
   sendMessages Chat[] @relation("SentMessages")
   receivedMessages Chat[]  @relation("ReceivedMessages")
@@ -32,14 +32,14 @@ enum Gender {
   Other
 }
 
-model UserProfile {
+model Profile {
   id Int @id @default(autoincrement())
-  year_level String  
-  gender Gender
-  hobby_1 String
-  hobby_2 String
-  not_good String
-  bio String
+  year_level String?  
+  gender Gender?
+  hobby_1 String?
+  hobby_2 String?
+  not_good String?
+  bio String?
 
   user User @relation(fields: [userId], references: [id])
   userId Int @unique

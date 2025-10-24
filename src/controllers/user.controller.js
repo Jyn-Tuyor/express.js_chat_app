@@ -3,6 +3,8 @@ const User = require("../models/User")
 const Chat = require("../models/Chat")
 const { Op } = require("sequelize")
 const { Sequelize } = require("sequelize")
+const { PrismaClient } = require("@prisma/client")
+const prisma = new PrismaClient();
 const sequelize = require("../db")
 
 exports.myProfile = (req, res) => {
@@ -20,31 +22,37 @@ exports.updateProfile = async (req, res) => {
     try {
         const { year_level, bio, gender, hobby_1, hobby_2, not_good } = req.body;
 
-        const user = await User.findOne({ where: { id: req.session.user.id }, include: [{ model: UserProfile, as: "profile" }] })
+        const user = await prisma.user.findUnique({
+            where:
+            {
+                id: req.session.user.id
+            },
+            include: {
+                profile: true
+            }
+        })
         const user_id = user.id;
 
-        if (user.profile) {
-            user.profile.year_level = year_level
-            user.profile.bio = bio
-            user.profile.gender = gender
-            user.profile.hobby_1 = hobby_1
-            user.profile.hobby_2 = hobby_2
-            user.profile.not_good = not_good
-
-            await user.save()
-            await user.profile.save()
-        } else {
-            await UserProfile.create({
-                "year_level": year_level,
-                "gender": gender,
-                "hobby_1": hobby_1,
-                "hobby_2": hobby_2,
-                "not_good": not_good,
-                "bio": bio,
-                "user_id": user_id
-            })
-        }
-
+        await prisma.profile.upsert({
+            where: { userId: user.id },
+            update: {
+                year_level,
+                bio,
+                gender,
+                hobby_1,
+                hobby_2,
+                not_good
+            },
+            create: {
+                year_level,
+                bio,
+                gender,
+                hobby_1,
+                hobby_2,
+                not_good,
+                user: { connect: { id: user.id } }
+            }
+        })
 
         req.session.user = {
             id: user_id,
@@ -97,12 +105,14 @@ exports.privateChat = async (req, res) => {
     // }); 
     const receiver_id = req.params.id;
     const sender_id = req.session.user.id;
-    const chat_with = await User.findOne({ where: { id: receiver_id }, include: [
-        {
-            model: UserProfile,
-            as: "profile"
-        }
-    ] })
+    const chat_with = await User.findOne({
+        where: { id: receiver_id }, include: [
+            {
+                model: UserProfile,
+                as: "profile"
+            }
+        ]
+    })
     const user = await User.findOne({ where: { id: sender_id } })
     const chats = await Chat.findAll({
         where: {
