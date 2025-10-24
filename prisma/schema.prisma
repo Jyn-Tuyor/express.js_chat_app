@@ -19,6 +19,10 @@ model User {
   username String
   password String
   profile UserProfile?
+
+  sendMessages Chat[] @relation("SentMessages")
+  receivedMessages Chat[]  @relation("ReceivedMessages")
+
   createdAt DateTime @default(now())
 }
 
@@ -41,3 +45,28 @@ model UserProfile {
   userId Int @unique
 }
 
+enum Broadcast {
+  Public
+  Private
+}
+
+enum Type {
+  Joined
+  Left
+  Chat
+}
+
+model Chat {
+  id Int @id @default(autoincrement())
+  message String 
+  broadcast Broadcast
+  type Type
+
+  sender User @relation("SentMessages", fields: [senderId], references: [id])
+  receiver User? @relation("ReceivedMessages", fields: [receiverId], references: [id])
+
+  senderId Int 
+  receiverId Int? 
+
+  createdAt DateTime @default(now())
+}
