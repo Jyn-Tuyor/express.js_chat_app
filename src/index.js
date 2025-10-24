@@ -5,6 +5,7 @@ const path = require('path')
 const session = require("express-session")
 const auth = require("./middleware/auth")
 const socketInit = require("./socket")
+const net = require("node:net")
 
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
@@ -44,10 +45,9 @@ app.use((req, res, next) => {
 
 
 // Web socket   
-const server = http.createServer(app)
-
+const httpServer = http.createServer(app)
 // Socket logics are in here
-socketInit(server)
+socketInit(httpServer)
 
 // routes
 app.use('/', require('./routes/auth.routes'));
@@ -91,4 +91,4 @@ app.get("/", (req, res) => {
 })
 
 
-server.listen(PORT, () => console.log("Server running on http://localhost:7878"));
+httpServer.listen(PORT, () => console.log("Server running on http://localhost:7878"));

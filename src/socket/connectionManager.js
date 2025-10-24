@@ -1,4 +1,5 @@
-const Chat = require('../models/Chat')
+const { PrismaClient } = require("@prisma/client")
+const prisma = new PrismaClient()
 
 class ConnectionManager {
     constructor(wss, WsServer) {
@@ -6,7 +7,6 @@ class ConnectionManager {
         this.WsServer = WsServer
         this.wss = wss;
         this.connectionMode;
-        // this.client_ws = client_ws;
     }
 
     addClient(data, client_ws) {
@@ -48,12 +48,12 @@ class ConnectionManager {
     async broadcastPublicChat(data, client_ws) {
         this.connectionMode = "public"
 
-        await Chat.create({
-            "sender_id": client_ws.user.id,
+        await prisma.chat.create({ data: {
+            "senderId": client_ws.user.id,
             "message": data.message.length >= 48 ? data.message.slice(0, 48) : data.message,
-            "broadcast": 'global',
+            "broadcast": 'public',
             "type": "chat"
-        })
+        }})
 
         this.wss.clients.forEach((client) => {
             if (client.readyState === this.WsServer.OPEN) {
@@ -85,23 +85,23 @@ class ConnectionManager {
 
             // console.log("sended")
 
-            await Chat.create({
-                "sender_id": client_ws.user.id,
-                "receiver_id": data.receiver,
+            await prisma.chat.create({ data: {
+                "senderId": client_ws.user.id,
+                "receiverId": data.receiver,
                 "message": data.message.length >= 48 ? data.message.slice(0, 48) : data.message,
                 "broadcast": 'private',
                 "type": "chat"
-            })
+            }})
         } else {
             // fallback: persist private chat to DB if possible
             if (client_ws.user && client_ws.user.id) {
-                await Chat.create({
-                    sender_id: client_ws.user.id,
-                    receiver_id: data.receiver,
-                    message: data.message.length >= 48 ? data.message.slice(0, 48) : data.message,
-                    broadcast: 'private',
-                    type: 'chat'
-                });
+                await prisma.chat.create({ data: {
+                    "senderId": client_ws.user.id,
+                    "receiverId": data.receiver,
+                    "message": data.message.length >= 48 ? data.message.slice(0, 48) : data.message,
+                    "broadcast": 'private',
+                    "type": 'chat'
+                }});
             }
         }
 

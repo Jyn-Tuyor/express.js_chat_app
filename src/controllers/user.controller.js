@@ -68,7 +68,7 @@ exports.updateProfile = async (req, res) => {
 exports.chatRoom = async (req, res) => {
     const chats = await prisma.chat.findMany({
         where: {
-            broadcast: 'Public'
+            broadcast: 'public'
         },
         include: 
             {
@@ -94,7 +94,7 @@ exports.privateChat = async (req, res) => {
             profile: true
         }
     })
-    const user = await prisma.user.findUnique({ where: { id: sender_id } })
+    const user = await prisma.user.findUnique({ where: { id: parseInt(sender_id) } })
     const chats = await prisma.chat.findMany({
         where: {
             OR: [

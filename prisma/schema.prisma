@@ -46,14 +46,14 @@ model Profile {
 }
 
 enum Broadcast {
-  Public
-  Private
+  public 
+  private
 }
 
 enum Type {
-  Joined
-  Left
-  Chat
+  joined
+  left
+  chat
 }
 
 model Chat {
