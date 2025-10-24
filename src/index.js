@@ -4,10 +4,10 @@ const http = require("http")
 const path = require('path')
 const session = require("express-session")
 const { Op } = require("sequelize")
-
 const sequelize = require("./db")
 const auth = require("./middleware/auth")
 const socketInit = require("./socket")
+
 
 // Initialize tables
 const User = require("./models/User")
@@ -86,7 +86,7 @@ protectedRoutes.get("/dashboard", async(req, res) => {
         }
     ]})
 
-    console.log("USer:::", user.profile)
+    console.log("user profile:", user.profile)
     if (user_id) {
         
         const fetched_users = await User.findAll({ 
