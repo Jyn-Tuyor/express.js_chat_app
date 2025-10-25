@@ -1,5 +1,4 @@
 const WsServer = require("ws")
-const Chat = require("../models/Chat")
 const ConnectionManager = require("./connectionManager");
 
 const socketInit = (server) => {

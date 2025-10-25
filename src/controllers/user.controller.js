@@ -1,6 +1,5 @@
 const { PrismaClient } = require("@prisma/client")
 const prisma = new PrismaClient();
-const sequelize = require("../db")
 
 exports.myProfile = (req, res) => {
     // const user = req.session.user;
