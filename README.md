@@ -17,7 +17,7 @@ This project is made school-based (<i>though not obvius, will work on it!</i>) w
 
 1. Clone the repository
 ```bash
-git clone https://github.com/Jyn-Tuyor/fruitiger-aero-chat-app.git
+git clone https://github.com/Jyn-Tuyor/chat-fruitiger-aero-theme.git
 ```
 2. Install dependencies
 ```bash
