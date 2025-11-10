@@ -5,3 +5,4 @@ This project is made school-based (<i>though not obvius, will work on it!</i>) w
 ## Screenshots
 
 ![alt text](screenshot_1.jpg)
+![alt text](screenshot_2.jpg)
