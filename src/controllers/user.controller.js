@@ -69,10 +69,10 @@ exports.chatRoom = async (req, res) => {
         where: {
             broadcast: 'public'
         },
-        include: 
-            {
-                sender: true
-            },
+        include:
+        {
+            sender: true
+        },
         take: 20,
         orderBy: {
             createdAt: 'desc'
@@ -88,7 +88,7 @@ exports.privateChat = async (req, res) => {
     const receiver_id = req.params.id;
     const sender_id = req.session.user.id;
     const chat_with = await prisma.user.findUnique({
-        where: { id: receiver_id }, 
+        where: { id: receiver_id },
         include: {
             profile: true
         }
@@ -100,10 +100,10 @@ exports.privateChat = async (req, res) => {
                 { receiverId: receiver_id, senderId: sender_id },
                 { receiverId: sender_id, senderId: receiver_id },
             ]
-        }, 
+        },
         include: {
             sender: true,
-            receiver: true 
+            receiver: true
         },
         orderBy: {
             createdAt: 'desc'
