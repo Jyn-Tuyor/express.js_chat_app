@@ -1,19 +1,19 @@
 ## 🌍 Fruitiger Aero Chat Web App
-A fruitiger aero themed chat application that supports public and private chat rooms.
+A fruitiger aero themed chat application that supports public and private chat rooms.<br>
 This project is made school-based (<i>though not obvius, will work on it!</i>) with the purpose of helping introverted students like me find some friends.
 
-## Screenshots
+## 📸 Screenshots
 
 ![alt text](screenshot_1.jpg)
 ![alt text](screenshot_2.jpg)
 
-## Getting Started
+## 🚀 Getting Started
 
-### Prerequisites
-- Node.js (v16 or higher)
-- npm or yarn package manager
+### 🧩 Prerequisites
+- ⚙️ Node.js (v16 or higher)
+- 📦 npm or yarn package manager
 
-### Installation
+### 🛠️ Installation
 
 1. Clone the repository
 ```bash
@@ -29,14 +29,14 @@ npm install
 npm run dev
 ```
 
-## Tech Stack
-- Node.Js & Express.Js
+## 💻 Tech Stack
+- Node.js & Express.js
 - EJS
 - SQLite
 - Prisma ORM
 - WS for websocket
 
-### Bug Reports
+### 🐞 Bug Reports
 
 If you find a bug, please open an issue with:
 - Clear title and description
